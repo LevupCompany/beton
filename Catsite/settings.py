@@ -27,7 +27,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'cg#p$g+j9tax!#a3cup@1$8obt2_+&
 # DEBUG = True
 DEBUG = bool(os.environ.get('DJANGO_DEBUG', False))
 
-ALLOWED_HOSTS = ['127.0.0.1', 'beton24.herokuapp.com']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -132,7 +132,6 @@ REDACTOR_UPLOAD = 'uploads/'
 # Static files (CSS, JavaScript, Images)
 # https://docs.django
 STATIC_URL = '/static/'
-STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Heroku: Update database configuration from $DATABASE_URL.
