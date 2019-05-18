@@ -58,7 +58,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'catsite.urls'
+ROOT_URLCONF = 'Catsite.urls'
 TEMPLATE_DIR = os.path.join(BASE_DIR, "templates")
 
 TEMPLATES = [
@@ -81,7 +81,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'catsite.wsgi.application'
+WSGI_APPLICATION = 'Catsite.wsgi.application'
 
 
 # Database
@@ -131,7 +131,7 @@ REDACTOR_UPLOAD = 'uploads/'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.django
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 
 # Extra places for collectstatic to find static files.
