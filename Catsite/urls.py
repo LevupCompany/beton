@@ -29,4 +29,4 @@ urlpatterns = [
     path('', include('catalog.urls')),
     path('tinymce/', include('tinymce.urls')),
 
-]
+]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
