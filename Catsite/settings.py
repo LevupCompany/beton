@@ -131,13 +131,11 @@ REDACTOR_UPLOAD = 'uploads/'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.django
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = BASE_DIR
 
 # The URL to use when referring to static files (where they will be served from)
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
-]
+STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
 
 # Heroku: Update database configuration from $DATABASE_URL.
 import dj_database_url
