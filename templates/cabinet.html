@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="ru">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/static/css/bootstrap.css">
+  <link rel="stylesheet" href="/static/fonts/fonts.css">
+  <link rel="stylesheet" href="/static/css/style.css">
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="/static/css/slick.css" />
+  <link rel="shortcut icon" href="/static/img/path.png">
+  <link rel="stylesheet" href="/static/lib/jquery.raty.css">
+  <link href="/static/css/dropdown.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+  <script src="http://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="/static/js/slick.min.js"></script>
+  <script src="/static/lib/jquery.raty.js"></script>
+  <script src="/static/js/jquery.dropdown.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  <script src="https://unpkg.com/feather-icons"></script>
+  <script type="text/javascript">
+  $(document).ready(function(){
+      var link = window.location.pathname;
+      var nav1 = $('.nav23 li a').toArray();
+      for (i=nav1; i<nav1.length; i++){
+        console.log('заебись');
+      };
+      $('.nav23 li a[href="'+link+'"]').addClass('active');
+      $('.navbar-nav li a[href="'+link+'"]').addClass('active');
+    });
+  </script>
+  <title>Кабинет {{request.user.profile.company}}</title>
+
+  <!-- Bootstrap core CSS -->
+
+
+  <style>
+    .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+  <!-- Custom styles for this template -->
+  <link href="/static/css/dashboard.css" rel="stylesheet">
+
+</head>
+
+<body>
+  <nav class="navbar navbar-dark navbar-expand-md fixed-top p-0 shadow-sm" style=" background-color: black">
+    <a class="navbar-brand pl-3" href="">{{request.user.profile.company}}</a>
+    <button class="navbar-toggler mr-3" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse mx-3" id="navbarText">
+      <ul class="navbar-nav justify-content-end">
+        <li class="d-md-none nav-item">
+          <a class="nav-link" href="#">
+            Аналитика
+          </a>
+        </li>
+        <li class="d-md-none nav-item">
+          <a class="nav-link" href="{% url 'order_index' %}">
+            Заказы
+          </a>
+        </li>
+        <li class="d-md-none nav-item">
+          <a class="nav-link" href="{% url 'review_index'%}">
+            Отзывы
+          </a>
+        </li>
+        <li class="d-md-none nav-item">
+          <a class="nav-link" href="#">
+            Тарифы
+          </a>
+        </li>
+        <li class="d-md-none nav-item">
+          <a class="nav-link" href="{% url 'tovar_index' %}">
+            Загрузка товаров
+          </a>
+        </li>
+        <li class="d-md-none nav-item">
+          <a class="nav-link" href="{% url 'profile_index' %}">
+            Профиль
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">
+            Уведомления <span class="ml-1 badge badge-pill badge-success">2</span>
+          </a>
+        </li>
+        <li class="nav-item text-nowrap">
+          <a class="nav-link" href="{% url 'logout' %}">
+            Выйти
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container-fluid">
+    <div class="row">
+      <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+        <div class="sidebar-sticky fixed-top">
+          <ul class="nav nav23 flex-column">
+            <li class="nav-item">
+              <a class="nav-link" href="#">
+                <span class="mr-1" data-feather="activity"></span>
+                Аналитика
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'order_index' %}">
+                <span class="mr-1" data-feather="briefcase"></span>
+                Заказы
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'review_index'%}">
+                <span class="mr-1" data-feather="book"></span>
+                Отзывы
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">
+                <span class="mr-1" data-feather="dollar-sign"></span>
+                Тарифы
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'tovar_index' %}">
+                <span class="mr-1" data-feather="download-cloud"></span>
+                Загрузка товаров
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'profile_index' %}">
+                <span data-feather="dollar-sign"></span>
+                Профиль
+              </a>
+            </li>
+
+          </ul>
+        </div>
+      </nav>
+
+      <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+        {%block content%}
+        {%endblock%}
+      </main>
+    </div>
+  </div>
+  <script>
+        feather.replace()
+  </script>
+
+<script>
+  $('.phone').text(function(i, text) {
+    return text.replace(/(\d{3})(\d{3})(\d{2})(\d{2})/, '+38'+' ($1) $2-$3-$4');
+});
+</script>
+
+</body>
+
+</html>

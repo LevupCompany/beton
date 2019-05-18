@@ -1,0 +1,15 @@
+{%extends 'cabinet.html'%}
+{%block content%}
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+          <h1 class="h2">Доска Заказов</h1>
+          <div class="btn-toolbar btn-group mb-2 mb-md-0" role="group" aria-label="Basic example">
+          </div>
+        </div>
+        <form method="post">{% csrf_token %}
+            {%for f in form%}
+              <div class="h5">{{f.label_tag}} {{f}}</div>
+            {% endfor%}
+            <input type="submit" value="Сохранить">
+        </form>
+
+{%endblock%}

@@ -1,0 +1,79 @@
+{%extends 'cabinet.html'%}
+{%block content%}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h1 class="h2">Профиль</h1>
+  <div class="btn-toolbar btn-group mb-2 mb-md-0" role="group" aria-label="Basic example">
+    <a href="{% url 'profile_edit_spec' %}" class="rounded-0 btn btn-sm btn-outline-dark">
+      <span data-feather="plus-square"></span>
+      Специализации
+    </a>
+    <a href="{% url 'profile_edit_regions' %}" class="rounded-0 btn btn-sm btn-outline-dark">
+      <span data-feather="plus-square"></span>
+      Города доставки
+    </a>
+    <a href="{% url 'profile_edit' %}" class="rounded-0 btn btn-sm btn-outline-dark">
+      <span data-feather="plus-square"></span>
+      Редактировать профиль
+    </a>
+  </div>
+</div>
+
+<div class="row text-center text-md-left">
+  <div class="col-md-3">
+    <img src="/{{request.user.profile.image|default:'static/img/graphics-no-manager-image.svg'}}" width="150px" alt="" class="img rounded-circle img-fluid">
+  </div>
+  <div class="col-md-9">
+    <div class="h4 text-secondary">{{request.user.profile.company}}
+      <div class="d-inline ml-3 text-dark  mt-1 mr-2" id="rating2"></div><span class="text-dark" id="ha2">{{request.user.profile.rating.average_range|floatformat}}</span>
+      <script type="text/javascript">
+        $('#rating2').raty({
+          starType: 'i',
+          half: true,
+          readOnly: true,
+          score: {{request.user.profile.rating.average_range|floatformat}},
+          targetType: 'score'
+        });
+      </script>
+    </div>
+    Просмотры компании {{count.name}}
+    <div class="row mt-4">
+      <div class="col-4 h5">ИНН:</div>
+      <div class="col-8 h5">{{request.user.profile.identificate|default:'Не указан'}}</div>
+      <div class="col-4 h5">Директор:</div>
+      <div class="col-8 h5">{{request.user.profile.director|default:'Не указан'}}</div>
+      <div class="col-4 h5">Город:</div>
+      <div class="col-8 h5">{{request.user.profile.city|default:'Не указан'}}</div>
+      <div class="col-4 h5">Адрес офиса:</div>
+      <div class="col-8 h5">{{request.user.profile.street|default:'Не указан'}}</div>
+      <div class="col-4 h5">Адрес склада:</div>
+      <div class="col-8 h5">{{request.user.profile.street2|default:'Не указан'}}</div>
+      <div class="col-4 h5">Сайт компании:</div>
+      <div class="col-8 h5"><a href="{{request.user.profile.site|default:'#'}}" class="h5 d-inline">{{request.user.profile.site|default:'Не указан'}}</a></div>
+      <div class="col-4 h5">Email отдела продаж:</div>
+      <div class="col-8 h5">{{request.user.email|default:'#'}}</div>
+      <div class="col-4 h5">Имя Фамилия менеджера:</div>
+      <div class="col-8 h5">{{request.user.profile.manager|default:'Не указан'}}</div>
+      <div class="col-4 h5">Администратор кабинета:</div>
+      <div class="col-8 h5">{{request.user.profile.admin|default:'Не указан'}}</div>
+      <div class="col-4 h5">Телефон администратора:</div>
+      <div class="col-8 h5"><a href="tel:{{request.user}}" class="h5 d-inline"><span class="phone">{{request.user}}</span></a></div>
+      <div class="col-4 h5">Телефон менеджера:</div>
+      <div class="col-8 h5"><a href="tel:{{request.user.profile.phone}}" class="h5 d-inline"><span class="phone">{{request.user.profile.phone|default:'Не указан'}}</span></a></div>
+    </div>
+    <div class="row h5">
+      <div class="col-4">Регионы доставки:</div>
+      <div class="col-8">
+        {% for d in request.user.profile.regions.all %}
+        {{d}} &nbsp
+        {% endfor %}
+      </div>
+      <div class="col-4">Специализация:</div>
+      <div class="col-8">{% for d in request.user.profile.specialisation.all %}
+      {{d}} &nbsp
+      {% endfor %}</div>
+    </div>
+
+
+  </div>
+</div>
+{%endblock%}

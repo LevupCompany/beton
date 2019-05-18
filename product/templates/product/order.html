@@ -1,0 +1,70 @@
+{%extends 'cabinet.html'%}
+{%block content%}
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+          <h1 class="h2">Доска Заказов ({{order_list.count}})</h1>
+          <div class="btn-toolbar btn-group mb-2 mb-md-0" role="group" aria-label="Basic example">
+            <div class="input-group-prepend">
+              <button class="btn btn-outline-dark rounded-0 dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Категория</button>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" href="#">Action</a>
+                <a class="dropdown-item" href="#">Another action</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <ol class="list-group d-none d-sm-block">
+          <li class="list-group-item">
+            <div class="row ">
+              <div class="col-sm-1">Дата</div>
+              <div class="col-sm-2">Имя</div>
+              <div class="col-sm-2">Телефон</div>
+              <div class="col-sm-2">Email</div>
+              <div class="col-sm-2">Товар</div>
+              <div class="col-sm-2">Адрес доставки</div>
+              <div class="col-sm-1">Статус</div>
+            </div>
+          </li>
+        </ol>
+        <ol class="list-group">
+          {% for o in order_list %}
+          <li class="list-group-item">
+            <div class="row">
+              <div class="col-sm-1">{{o.date|date:'d-m-Y'}}</div>
+              <div class="col-sm-2">{{o.name}}</div>
+              <div class="col-sm-2"><a href="tel:{{o.phone}}" class="btn-link phone text-dark">{{o.phone}}</a></div>
+              <div class="col-sm-2"><a href="mailto:{{o.email}}" class="btn-link text-dark">{{o.email}}</a></div>
+              <div class="col-sm-2">{{o.item}}</div>
+              <div class="col-sm-2">{{o.city}}, {{o.adress}}</div>
+              <div class="col-sm-1 h5">
+                {% if o.check == True %}
+                <i class="fas fa-check-circle"></i>
+                {% elif o.cancel == True %}
+                <i class="fas fa-times-circle"></i>
+                {% else %}
+                <a href="{%url 'order_confirm' pk=o.id %}" class="btn-link  text-dark"><i class="far fa-check-circle"></i></a>
+                <a href="{%url 'order_cancel' pk=o.id %}" class="btn-link text-dark"><i class="far fa-times-circle"></i></a>
+                {% endif %}
+              </div>
+            </div>
+          </li>
+          {% endfor %}
+          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2 mt-3">Доска Запросов ({{request_list.count}})</h1>
+          </div>
+
+          {% for o in request_list %}
+          <li class="list-group-item">
+            <div class="row">
+              <div class="col-sm-1">{{o.date|date:'d-m-Y'}}</div>
+              <div class="col-sm-2">{{o.name}}</div>
+              <div class="col-sm-2"><a href="tel:{{o.phone}}" class="btn-link phone text-dark">{{o.phone}}</a></div>
+              <div class="col-sm-2"><a href="mailto:{{o.email}}" class="btn-link text-dark">{{o.email}}</a></div>
+              <div class="col-sm-2">{{o.item}}</div>
+              <div class="col-sm-3">{{o.city}}, {{o.adress}}</div>
+            </div>
+          </li>
+          {% endfor %}
+        </ol>
+
+{%endblock%}

@@ -1,0 +1,4 @@
+
+{% for item in news %}
+    <p><a href="{% url 'news_view' item.slug %}">{{item.title}}</a></p>
+{% endfor %}

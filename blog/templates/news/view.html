@@ -1,0 +1,9 @@
+<div class="post">
+        {% if news.published_date %}
+            <div class="date">
+                {{ news.published_date }}
+            </div>
+        {% endif %}
+        <h1>{{ news.title }}</h1>
+        <p>{{ news.text|safe }}</p>
+    </div>

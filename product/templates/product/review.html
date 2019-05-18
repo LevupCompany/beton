@@ -1,0 +1,50 @@
+{%extends 'cabinet.html'%}
+{%block content%}
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+          <h1 class="h2">Доска Отзывов</h1>
+          <div class="btn-toolbar mb-2 mb-md-0">
+
+            <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+              Текущая неделя
+            </button>
+          </div>
+        </div>
+        <ol class="list-group">
+          <li class="list-group-item">
+            <div class="row ">
+              <div class="col-md-2 col-sm-3 col-6">Дата <span class="d-none d-lg-inline">публикации</span></div>
+              <div class="col-md-2 col-sm-4 col-6">Имя</div>
+              <div class="col-md-8 d-none d-sm-block col-sm-5">Отзыв</div>
+            </div>
+          </li>
+        </ol>
+        <ol class="list-group">
+          {% for r in review_list %}
+          <li class="list-group-item">
+            <div class="row">
+            <div class="col-md-2 col-sm-3 col-6">
+              {{r.date|date:'d.m.Y'}}
+            </div>
+            <div class="col-md-2 col-sm-4 col-6">
+              {{r.name}}
+            </div>
+            <div class="col-6 d-sm-none d-block"></div>
+            <div class="col-md-8 col-sm-5 col-6 d-flex">
+              <div class=" stars" id="review-{{r.order.id}}"></div> <div class="h6 ml-1"> {{r.range}}</div></div>
+            <script type="text/javascript">
+              $('#review-{{r.order.id}}').raty({
+                starType: 'i',
+                half: true,
+                readOnly: true,
+                score: {{r.range|floatformat}},
+              });
+            </script>
+            <div class="col-md-12 mt-2">{{r.detail}}</div>
+          </div>
+          </li>
+          {% empty%}
+          <li class="list-group-item">У вас нет отзывов</li>
+          {% endfor%}
+        </ol>
+{%endblock%}
