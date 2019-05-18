@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path,include
 from django.contrib.auth import views as auth_views
 from felixuser import views as core_views
+from . import settings
 urlpatterns = [
     path('login/', auth_views.LoginView.as_view(template_name='felixuser/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
@@ -32,8 +33,8 @@ urlpatterns = [
 ]
 if not settings.DEBUG:
     urlpatterns += [
-        url(r'^media/(?P<path>.*)$', 'django.views.static.serve',
+        path(r'^media/(?P<path>.*)$', 'django.views.static.serve',
             {'document_root': settings.MEDIA_ROOT, 'show_indexes': True}),
-        url(r'^static/(?P<path>.*)$', 'django.views.static.serve',
+        path(r'^static/(?P<path>.*)$', 'django.views.static.serve',
             {'document_root': settings.STATIC_ROOT}),
     ]
