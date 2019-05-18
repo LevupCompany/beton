@@ -1,1 +1,1 @@
-web: gunicorn catsite.wsgi --log-file -
+web: gunicorn Catsite.wsgi --log-file -
