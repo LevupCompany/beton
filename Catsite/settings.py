@@ -131,11 +131,7 @@ REDACTOR_UPLOAD = 'uploads/'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.django
-<<<<<<< HEAD
-STATIC_ROOT = ''
-=======
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
->>>>>>> cfb4d0f56f37d12ec6ffc8aa702908fe99457976
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # The URL to use when referring to static files (where they will be served from)
 STATIC_URL = '/static/'
