@@ -73,8 +73,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                # 'context_processors.main_menu.menu',
-                # 'context_processors.main_menu.order',
+                'context_processors.main_menu.menu',
+                'context_processors.main_menu.order',
 
             ],
         },
