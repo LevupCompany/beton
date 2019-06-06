@@ -143,7 +143,6 @@ body {
     </style>
 
     <!-- Custom styles for this template -->
-    <link href="floating-labels.css" rel="stylesheet">
 
   </head>
 
@@ -154,9 +153,10 @@ body {
         <h1 class="h4 mb-3 font-weight-bold">Вход в личный кабинет</h1>
       </div>
       {% csrf_token %}
-      {% for field in form %}
-      {% load myfilters %}
+{{ form.non_field_errors }}
 
+    {% for field in form %}
+      {% load myfilters %}
       <div class="form-label-group">
         {{ field|addcss:'form-control' }}
         <label for="{{field.id_for_label}}">{{ field.label }}</label>
@@ -164,9 +164,17 @@ body {
       {% endfor %}
 
 
-  <button class="btn btn-lg btn-outline-dark btn-block" type="submit">Sign in</button>
+  <button class="btn btn-lg btn-outline-dark btn-block" type="submit">Войти</button>
   <p class="mt-5 mb-3 text-dark text-center">Не зарегистрированы? <a href="{%url 'signup'%}" class="btn-link">Регистрация</a></p>
   <p class="mt-5 mb-3 text-dark text-center">&copy; 2017-2018</p>
 </form>
+  <script src="/static/js/jquery.inputmask.bundle.js"></script>
+<script>
+$(document).ready(function(){
+  $("#id_username").inputmask("+38(999) 999-99-99",{removeMaskOnSubmit:true});
+  $("#example2").inputmask();
+});
+
+</script>
 </body>
 </html>

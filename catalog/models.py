@@ -1,9 +1,9 @@
 from django.db import models
+from django.db.models import F,Avg,Min
 from uuslug import slugify
 from django.contrib.auth.models import User
 from datetime import datetime
 from django.core.validators import MaxValueValidator, MinValueValidator
-
 class City(models.Model):
     name = models.CharField(max_length=250, verbose_name='Название')
     slug = models.CharField(verbose_name='Транслит', max_length=200, blank=True)  # Поле для записи ссылки
@@ -19,6 +19,7 @@ class City(models.Model):
          verbose_name_plural = "Города"
 class Category(models.Model):
     name = models.CharField(max_length=250, verbose_name='Название')
+    image = models.ImageField(verbose_name='Иконка', blank=True, upload_to='static/images')
     slug = models.CharField(verbose_name='Транслит', max_length=200, blank=True)
     cities = models.ManyToManyField(City)
     def __str__(self):
@@ -32,12 +33,16 @@ class Category(models.Model):
          verbose_name = "Категория"
          verbose_name_plural = "Категории"
 class Subcategory(models.Model):
+    c = [('м<sup><small>3</small></sup>', "Кубометр"), ('шт.', "Штук"), ('т.', "Тонна")]
     name = models.CharField(max_length=250, verbose_name='Название')
     slug = models.CharField(verbose_name='Транслит', max_length=200, blank=True)
+    weight = models.CharField(max_length=250,choices=c, default='шт.')
     image = models.ImageField(verbose_name='Иконка',upload_to='static/images')
     category = models.ForeignKey(Category, on_delete = models.CASCADE, verbose_name='Категория')
     def __str__(self):
         return self.name
+    def minimus(self):
+        return Tovar.objects.filter(category=self).aggregate(average_price=Min('product__price'))
     def __unicode__(self):
         return self.name
     def save(self):
@@ -50,10 +55,13 @@ class Tovar(models.Model):
     name = models.CharField(max_length=250, verbose_name='Название')
     slug = models.CharField(verbose_name='Транслит', max_length=200, blank=True)
     category = models.ForeignKey(Subcategory, on_delete = models.CASCADE, verbose_name='Категория')
+    min_price = models.IntegerField(verbose_name ='Минимальная цена', default=100)
     def __str__(self):
         return self.name
     def __unicode__(self):
         return self.name
+    def minimus(self):
+        return Tovar.objects.filter(name=self.name).aggregate(average_price=Min('product__price'))
     def save(self):
         self.slug = '{0}'.format(slugify(self.name))  # Статья будет отображаться в виде NN-АА-АААА
         super(Tovar, self).save()
@@ -73,7 +81,7 @@ class Order(models.Model):
     city = models.CharField(max_length=200, default='Одесса',verbose_name='Город')
     adress = models.CharField(max_length=200,verbose_name='Адрес доставки')
     item = models.ForeignKey(Tovar, on_delete = models.CASCADE, verbose_name='Товар')
-    weight = models.IntegerField(validators=[MinValueValidator(1)], blank=True ,verbose_name='Объем')
+    weight = models.IntegerField(blank=True,verbose_name='Объем')
     is_all = models.BooleanField(default=False,verbose_name='Отправить для всех получателей')
     vendor = models.ForeignKey(User, on_delete = models.CASCADE, null=True,blank=True, verbose_name='Производитель')
     date = models.DateTimeField(default=datetime.now)

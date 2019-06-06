@@ -9,5 +9,6 @@ urlpatterns = [
     path('profile/edit/', login_required(core_views.UpdateProfile.as_view()), name='profile_edit'),
     path('profile/edit/regions/', login_required(core_views.UpdateProfiler.as_view()), name='profile_edit_regions'),
     path('profile/edit/specialisation/', login_required(core_views.UpdateProfiles.as_view()), name='profile_edit_spec'),
-
-    ]
+    path('notify/', login_required(core_views.index_notify), name='notify_index'),
+    path('verify/', core_views.verify,name='verify'),
+]

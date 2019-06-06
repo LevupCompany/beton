@@ -1,0 +1,33 @@
+<div class="form-group mt-3 mb-1 row">
+    <label class="col-md-5" for="checker"></label>
+    <input type="text" class="col-md-5 yellow4 form-control phone rounded-0" id="checker" name="checker">
+    <button name="check_code" id="check_code" class="btn col-md-2 btn-block text-dark bg-primary btn-primary" type="submit">
+        Ввести код
+    </button>
+    <div class="answers col-12"><span class="offset-md-5 col-md-7 font-weight-bold text-danger">{{r}}</span></div>
+    <script>
+                   $(document).on("click", "#check_code", function(){
+
+        var param2_check = $("#id_username").val();
+        var param2_checker = $("#checker").val();
+
+        $.ajax({
+            type: 'POST', // метод отправки
+            url: '{%url 'verify'%}', // путь к обработчику
+            data: {
+                param_check: param2_check,param_checker: param2_checker,csrfmiddlewaretoken:'{{csrf_token}}'},// переменная со значением из поля с классом email
+
+            success: function(data){
+                $(".answer").html(data); // при успешном получении ответа от сервера, заносим полученные данные в элемент с классом answer
+            },
+            error: function(data){
+                console.log(data); // выводим ошибку в консоль
+            }
+        });
+
+        return false;
+    })
+
+
+    </script>
+</div>

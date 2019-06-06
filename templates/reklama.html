@@ -1,0 +1,16 @@
+
+<section class="bg-light" id="sales">
+  <div class="container">
+    <h4 class="pt-5">Акции в городе <a href="#bd-example-modal-xl" class="ml-1 btn-link modal-link" data-toggle="modal" data-target=".bd-example-modal-xl">{{city_name}}</a></h4>
+    <div class="row   py-5">
+      {%for a in sales %}
+      <div class="my-2 col-md-6">
+        <div class="bg-secondary thumbnail p-4" style="background-image:url('/{{a.image}}')">
+          <h4 class="ml-0 pl-0 text-uppercase {%if a.fon == 1%}text-white{%endif%} font-weight-bold col-9">{{a.text}}</h4>
+          <a href="{%url 'company' pk=a.user.id%}" class="btn mt-4 col-4 btn-block btn-outline-{%if a.fon == 1%}light{% elif a.fon == 2%}dark{%endif%}">Подробнее</a>
+        </div>
+      </div>
+      {%endfor%}
+    </div>
+  </div>
+</section>

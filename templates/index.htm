@@ -1,96 +1,152 @@
-
 <html>
 {% load static %}
 <head>
-  <title>Бетон</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="{%static 'css/bootstrap.css'%}">
-  <link rel="stylesheet" href="/static/fonts/fonts.css">
-  <link rel="stylesheet" href="/static/css/style.css">
-  <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
-  <meta charset="utf-8">
-  <link rel="stylesheet" type="text/css" href="/static/css/slick.css" />
-  <link rel="shortcut icon" href="/static/img/path.png">
-  <link rel="stylesheet" href="/static/lib/jquery.raty.css">
-  <link href="/static/css/dropdown.css" rel="stylesheet" type="text/css">
-  <script src="//code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
-  <script src="//stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
-  <script type="text/javascript" src="/static/js/slick.min.js"></script>
-  <script src="/static/lib/jquery.raty.js"></script>
-  <script src="/static/js/jquery.dropdown.min.js"></script>
+    <title>Бетон</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{%static 'css/bootstrap.css'%}">
+    <link rel="stylesheet" href="/static/fonts/fonts.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.8.1/css/all.css"
+          integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="/static/css/slick.css"/>
+    <link rel="shortcut icon" href="/static/img/path.png">
+    <link rel="stylesheet" href="/static/lib/jquery.raty.css">
+    <link href="/static/css/dropdown.css" rel="stylesheet" type="text/css">
+    <script src="//code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+            integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+            crossorigin="anonymous"></script>
+    <script src="//stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+            integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+            crossorigin="anonymous"></script>
+    <script type="text/javascript" src="/static/js/slick.min.js"></script>
+    <script src="/static/lib/jquery.raty.js"></script>
+    <script src="/static/js/jquery.dropdown.min.js"></script>
 
 </head>
+<script>
 
+
+    function validate(){
+   var x=document.forms["form"]["tovar"].value;
+   var y=document.forms["form"]["city"].value;
+   if (x.length==0){
+      document.getElementById("namef").innerHTML="Выберите товар из списка";
+      return false;
+   }
+   let list = Array.prototype.map.call(document.getElementById("cities").options, (option) => option.value);
+    //---Later in your validation process
+    if (list.indexOf(y) < 0) {
+          document.getElementById("namefs").innerHTML="Введенного города нет в списке";
+      return false;
+
+}
+}
+
+
+</script>
 <body>
 {% load floattags %}
-  <div class="bg-white">
+<div class="bg-white">
     <div class="container">
-           <header class="navbar navbar-expand-lg  navbar-light">
-        <a class="navbar-brand mt-1" href="#"><img src="/static/img/logo.png" alt="" class="img img-fluid"></a>
-        <div class="mr-auto fas2">
-          <i class="fas fa-map-marker-alt d-none d-md-inline mr-1 mt-1"></i><span class="d-none d-md-inline">Город: </span>
-          <a href="#bd-example-modal-xl" class="ml-1 btn-link modal-link" data-toggle="modal" data-target=".bd-example-modal-xl">{{city_name}}</a>
-        </div>
-        <div class="d-none d-md-inline">
-          <a href="mailto:info@betonservis.ua" class="btn-link text-dark d-lg-inline d-none">info@betonservis.ua</a>
-          <div class="ml-3 d-inline"><a href="tel:8 800 200-24-06" data-toggle="tooltip" data-placement="top" title="Звонок бесплатный" class="btn-link text-dark"><i class="fas fa-phone mr-1"></i>8 800 200-24-06</a></div>
-        </div>
-        {% if request.user.is_authenticated %}
-        <a href="{% url 'profile_index' %}" class="btn d-md-flex d-none ml-3 btn-outline-primary">
-          <span class="text-dark"><i class="fas fa-sign-in-alt"></i> <span class="d-lg-inline d-none">Мой профиль</span></span>
-        </a>
-        {% else %}
-        <a href="{% url 'login' %}" class="btn d-md-flex d-none ml-3 btn-outline-primary">
-          <span class="text-dark"><i class="fas fa-sign-in-alt"></i> <span class="d-lg-inline d-none">Войти/Регистрация</span></span>
-        </a>
-        {% endif %}
-      </header>
+        <header class="navbar navbar-expand-lg  navbar-light">
+            <a class="navbar-brand mt-1" href="#"><img src="/static/img/logo.png" alt="" class="img img-fluid"></a>
+            <div class="mr-auto fas2">
+                <i class="fas fa-map-marker-alt d-none d-md-inline mr-1 mt-1"></i><span class="d-none d-md-inline">Город: </span>
+                <a href="#bd-example-modal-xl" class="ml-1 btn-link modal-link" data-toggle="modal"
+                   data-target=".bd-example-modal-xl">{{city_name}}</a>
+            </div>
+            <div class="d-none d-md-inline">
+                <a href="mailto:info@betonservis.ua"
+                   class="btn-link text-dark d-lg-inline d-none">info@betonservis.ua</a>
+                <div class="ml-3 d-inline"><a href="tel:8 800 200-24-06" data-toggle="tooltip" data-placement="top"
+                                              title="Звонок бесплатный" class="btn-link text-dark"><i
+                        class="fas fa-phone mr-1"></i>8 800 200-24-06</a></div>
+            </div>
+            {% if request.user.is_authenticated %}
+            <a href="{% url 'profile_index' %}" class="btn d-md-flex d-none ml-3 btn-outline-primary">
+                <span class="text-dark"><i class="fas fa-sign-in-alt"></i> <span
+                        class="d-lg-inline d-none">Мой профиль</span></span>
+            </a>
+            {% else %}
+            <a href="{% url 'login' %}" class="btn d-md-flex d-none ml-3 btn-outline-primary">
+                <span class="text-dark"><i class="fas fa-sign-in-alt"></i> <span class="d-lg-inline d-none">Войти/Регистрация</span></span>
+            </a>
+            {% endif %}
+        </header>
 
     </div>
     <section class="bg-dark">
-      <div class="container">
-        <nav class="navbar navbar-expand-md navbar-dark">
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="d-sm-flex d-md-none">
-            <div class="ml-3 d-inline"><a href="tel:8 800 200-24-06" data-toggle="tooltip" data-placement="top" title="Звонок бесплатный" class="btn-link text-light"><i class="fas fa-phone mr-1"></i>8 800 200-24-06</a></div>
-          </div>
-          <a href="#" class="d-sm-flex d-md-none btn ml-3 btn-outline-primary">
-            <span class="text-light"><i class="fas fa-sign-in-alt"></i></span>
-          </a>
-          <div class="collapse navbar-collapse" id="navbarText">
-            <ul class="navbar-nav">
-              {% for category in category_list %}
-
-              <li class="nav-item flex-fill">
-                <a class="nav-link text-center" href="{% url 'catalog_category' city_slug=city cat_slug=category.slug %}">{{category.name}}
+        <div class="container">
+            <nav class="navbar navbar-expand-md navbar-dark">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
+                        aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="d-sm-flex d-md-none">
+                    <div class="ml-3 d-inline"><a href="tel:8 800 200-24-06" data-toggle="tooltip" data-placement="top"
+                                                  title="Звонок бесплатный" class="btn-link text-light"><i
+                            class="fas fa-phone mr-1"></i>8 800 200-24-06</a></div>
+                </div>
+                <a href="#" class="d-sm-flex d-md-none btn ml-3 btn-outline-primary">
+                    <span class="text-light"><i class="fas fa-sign-in-alt"></i></span>
                 </a>
-              </li>
-              {% endfor %}
-            </ul>
-          </div>
-        </nav>
-      </div>
+                <div class="collapse navbar-collapse" id="navbarText">
+                    <ul class="navbar-nav">
+                        {% for category in category_list %}
+
+                        <li class="nav-item flex-fill">
+                            <a class="nav-link text-center"
+                               href="{% url 'catalog_category' city_slug=city cat_slug=category.slug %}">{{category.name}}
+                            </a>
+                        </li>
+                        {%empty%}
+                        <li class="nav-item flex-fill">Нет категорий</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </nav>
+        </div>
     </section>
-  </div>
-  <section class="search-section">
+</div>
+<section class="search-section">
     <div class="container pb-5 pt-5">
-      <h1 class="col-lg-7 pt-5 pb-5 text-uppercase font-weight-bold">Бесплатный сервис поиска поставщиков</h1>
-      <span class="col-lg-3 pt-5 mt-5 text-secondary">Сравните цены на бетон в городе {{city_name}}</span>
-      <form action="#" class="mt-1 mb-5 col-lg-12">
-        <div class="row">
-          <div class="input-group mt-2 col-md-9 col-lg-5 px-0">
-            <span class="cartes mt-2"><i class="fas mt-1 fa-info-circle" data-toggle="tooltip" data-placement="top" title="Звонок бесплатный"></i></span>
-            <select class="custom-select yellow yellow1">
-              <option selected>Продукт</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
-            </select>
-            <script type="text/javascript">
-              $('.yellow1').dropdown({
+        <h1 class="col-lg-7 pt-5 pb-5 text-uppercase font-weight-bold">Бесплатный сервис поиска поставщиков</h1>
+        <span class="col-lg-3 pt-5 mt-5 text-secondary">Сравните цены в городе {{city_name}}</span>
+        <form name='form' action="{%url 'catalog_search'%}" class="mt-1 mb-5 col-lg-12" method="get"
+              onsubmit="return validate()">
+            <input type="hidden" id="tbetOn23" name="tovar" value>
+            <span id="namef" class="danger"></span>            <span id="namefs" class="danger"></span>
+
+            <div class="row">
+                <div class="input-group mt-2 col-md-9 col-lg-6 px-0">
+                    <span class="cartes mt-2"><i class="fas mt-1 fa-info-circle" data-toggle="tooltip"
+                                                 data-placement="top" title="Звонок бесплатный"></i></span>
+                    <ul class="yellow11">
+                        {% for c in category_list %}
+                        <li>{{ c.name }}
+                            <ul>{% for subc in c.subcategory_set.all%}
+                                <li>{{ subc.name }}
+                                    <ul>
+                                        {% for t in subc.tovar_set.all%}
+                                        <li>
+                                            <button onclick="$('#tbetOn23').val($(this).val())"
+                                                    type="button"
+                                                    class="btn pl-0 btn-block text-left btn-link"
+                                                    value="{{t.id}}">{{t.name}}
+                                            </button>
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                    {% endfor %}
+                            </ul>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    <script type="text/javascript">
+              $('.yellow11').dropdown({
                 toggleText: 'Выберите продукт',
                 margin: 0,
                 autoResize: 0,
@@ -100,393 +156,421 @@
 
                 }
               });
-            </script>
-          </div>
-          <div class="input-group mt-2 col-md-3 col-lg-2 px-0">
-            <span class="cartes mt-2"><i class="fas mt-1 fa-info-circle" data-toggle="tooltip" data-placement="top" title="Звонок бесплатный"></i></span>
-            <input type="text" class="form-control yellow2 yellow" placeholder="Объем" autofocus aria-label="Large" aria-describedby="inputGroup-sizing-sm">
-            <span class="carts" id="basic-addon1">м<sup><small>3</small></sup></span>
 
-          </div>
-          <div class="input-group mt-2 col-md-8 col-lg-3 px-0">
-            <input type="text" class="form-control yellow yellow3" placeholder="Адрес доставки" aria-label="Large" aria-describedby="inputGroup-sizing-sm">
-            <a href="#bd-example-modal-xl" class="btn-link  carts text-dark" data-toggle="modal" data-target=".bd-example-modal-xl">На карте</a>
-          </div>
-          <div class="mt-2 col-md-4 pr-0 col-lg-2 pl-md-2 pl-0">
-            <button type="submit" class="btn btn-poisk btn-block"><span class="text-dark"><i class="fas fa-search mr-1"></i>Узнать цены</span></button>
-          </div>
-        </div>
-      </form>
+
+
+
+                    </script>
+                </div>
+                <div class="input-group mt-2 col-md-8 col-lg-4 px-0">
+                    <input type="text" list="cities" id="c_cities" name="city" class="form-control yellow yellow3" style="width:100%"
+                           placeholder="Адрес доставки"
+                           aria-label="Large" aria-describedby="inputGroup-sizing-sm">
+                    <datalist id="cities">
+                        {%for c in city_list%}
+                        <option value="{{c.name}}"></option>
+                        {%endfor%}
+                    </datalist>
+                </div>
+                <div class="mt-2 col-md-4 pr-0 col-lg-2 pl-md-2 pl-0">
+                    <button type="submit" onclick="validate(this.form)" class="btn btn-poisk btn-block"><span
+                            class="text-dark"><i
+                            class="fas fa-search mr-1"></i>Узнать цены</span></button>
+                </div>
+            </div>
+        </form>
     </div>
 
-  </section>
-  {% block content %}
-  {% endblock %}
-  <style type="text/css">
-  .actcii{
-    background:url('/static/img/4.png') no-repeat;
-    background-size:cover;
-  }
-  @media (max-width: 768px){
-    .actcii{
-      background:url('/static/img/4_4.png') no-repeat;
-      background-size:cover;
-
-    }
-  }
-  @media (max-width: 360px){
-    .actcii{
-      background:url('/static/img/3_2.png') no-repeat;
-      background-size:cover;
-    }
-  }
-  </style>
-  <section class="actcii">
-    <div class="container py-5">
-      <h2 class="text-uppercase font-weight-bold text-white col-lg-7 col-md-9">Получить прайс от всех поставщиков</h2>
-      <div class="col-lg-5 mt-3 col-md-6">
-        <div class="row">
-          <div class="col-2"><img src="/static/img/network.png" alt="" class="img img-fluid"></div>
-          <div class="col-10 font-weight-light text-white">Мы не являемся посредниками. Ваша заявка уйдет напрямую поставщикам.</div>
-        </div>
-      </div>
-      <div class="col-md-2 col-sm-4 col-7 mt-4">
-        <a href="#" class="btn btn-block text-dark bg-primary btn-primary">Подать заявку</a>
-      </div>
-    </div>
-  </section>
-  <section class="container">
+</section>
+{% block content %}
+{% endblock %}
+{%include 'include.html'%}
+{% block reklama %}
+{%endblock%}
+<section class="container">
     <div class="row my-3">
-      <div class="col-md-8">
-        <h2>Новости и статьи</h2>
-      </div>
-      <div class="col-md-4 yours">
-        <div class="your-class-arrow text-right btn-block btn-group"></div>
-      </div>
+        <div class="col-md-8">
+            <h2>Новости и статьи</h2>
+        </div>
+        <div class="col-md-4 yours">
+            <div class="your-class-arrow text-right btn-block btn-group"></div>
+        </div>
     </div>
     <div class="your-class">
-      <div class="card mb-md-4 mt-3 p-2 box-shadow">
-        <a href="#"><img class="card-img-top" alt="Thumbnail [100%x225]" src="/static/img/7.png" ></a>
-        <div class="card-body">
-          <p class="card-text"><a href="#" class="btn-link2 text-dark">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</a></p>
-          <div class="d-flex justify-content-between align-items-center">
+        <div class="card mb-md-4 mt-3 p-2 box-shadow">
+            <a href="#"><img class="card-img-top" alt="Thumbnail [100%x225]" src="/static/img/7.png"></a>
+            <div class="card-body">
+                <p class="card-text"><a href="#" class="btn-link2 text-dark">This is a wider card with supporting text
+                    below as a natural lead-in to additional content. This content is a little bit longer.</a></p>
+                <div class="d-flex justify-content-between align-items-center">
 
-            <small class="text-muted">25.06.2019</small>
-          </div>
+                    <small class="text-muted">25.06.2019</small>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="card mb-md-4 mt-3 p-2 box-shadow">
-        <a href="#"><img class="card-img-top" alt="Thumbnail [100%x225]" src="/static/img/5.png" ></a>
+        <div class="card mb-md-4 mt-3 p-2 box-shadow">
+            <a href="#"><img class="card-img-top" alt="Thumbnail [100%x225]" src="/static/img/5.png"></a>
 
-          <div class="card-body">
-          <p class="card-text"><a href="#" class="btn-link2 text-dark">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</a></p>
-          <div class="d-flex justify-content-between align-items-center">
+            <div class="card-body">
+                <p class="card-text"><a href="#" class="btn-link2 text-dark">This is a wider card with supporting text
+                    below as a natural lead-in to additional content. This content is a little bit longer.</a></p>
+                <div class="d-flex justify-content-between align-items-center">
 
-            <small class="text-muted">25.06.2019</small>
-          </div>
+                    <small class="text-muted">25.06.2019</small>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="card mb-md-4 mt-3 p-2 box-shadow">
-        <a href="#"><img class="card-img-top" alt="Thumbnail [100%x225]" src="/static/img/6.png" ></a>
+        <div class="card mb-md-4 mt-3 p-2 box-shadow">
+            <a href="#"><img class="card-img-top" alt="Thumbnail [100%x225]" src="/static/img/6.png"></a>
 
-        <div class="card-body">
-          <p class="card-text"><a href="#" class="btn-link2 text-dark">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</a></p>
-          <div class="d-flex justify-content-between align-items-center">
+            <div class="card-body">
+                <p class="card-text"><a href="#" class="btn-link2 text-dark">This is a wider card with supporting text
+                    below as a natural lead-in to additional content. This content is a little bit longer.</a></p>
+                <div class="d-flex justify-content-between align-items-center">
 
-            <small class="text-muted">25.06.2019</small>
-          </div>
+                    <small class="text-muted">25.06.2019</small>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="card mb-md-4 mt-3 p-2 box-shadow">
-        <a href="#" class=""><img class="card-img-top" alt="Thumbnail [100%x225]" src="/static/img/7.png" ></a>
+        <div class="card mb-md-4 mt-3 p-2 box-shadow">
+            <a href="#" class=""><img class="card-img-top" alt="Thumbnail [100%x225]" src="/static/img/7.png"></a>
 
-        <div class="card-body">
-          <p class="card-text"><a href="#" class="btn-link2 text-dark">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</a></p>
-          <div class="d-flex justify-content-between align-items-center">
+            <div class="card-body">
+                <p class="card-text"><a href="#" class="btn-link2 text-dark">This is a wider card with supporting text
+                    below as a natural lead-in to additional content. This content is a little bit longer.</a></p>
+                <div class="d-flex justify-content-between align-items-center">
 
-            <small class="text-muted">25.06.2019</small>
-          </div>
+                    <small class="text-muted">25.06.2019</small>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="card mb-md-4 mt-3 p-2 box-shadow">
-        <a href="#"><img class="card-img-top" alt="Thumbnail [100%x225]" src="/static/img/8.png" ></a>
+        <div class="card mb-md-4 mt-3 p-2 box-shadow">
+            <a href="#"><img class="card-img-top" alt="Thumbnail [100%x225]" src="/static/img/8.png"></a>
 
-        <div class="card-body">
-          <p class="card-text"><a href="#" class="btn-link2 text-dark">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</a></p>
-          <div class="d-flex justify-content-between align-items-center">
+            <div class="card-body">
+                <p class="card-text"><a href="#" class="btn-link2 text-dark">This is a wider card with supporting text
+                    below as a natural lead-in to additional content. This content is a little bit longer.</a></p>
+                <div class="d-flex justify-content-between align-items-center">
 
-            <small class="text-muted">25.06.2019</small>
-          </div>
+                    <small class="text-muted">25.06.2019</small>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="card mb-md-4 mt-3 p-2 box-shadow">
-        <a href="#"><img class="card-img-top" data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" alt="Thumbnail [100%x225]" src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22508%22%20height%3D%22225%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20508%20225%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_169ab71d0cf%20text%20%7B%20fill%3A%23eceeef%3Bfont-weight%3Abold%3Bfont-family%3AArial%2C%20Helvetica%2C%20Open%20Sans%2C%20sans-serif%2C%20monospace%3Bfont-size%3A25pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_169ab71d0cf%22%3E%3Crect%20width%3D%22508%22%20height%3D%22225%22%20fill%3D%22%2355595c%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22169.7578125%22%20y%3D%22123.6%22%3EThumbnail%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E"
-            data-holder-rendered="true" style="height: 225px; width: 100%; display: block;"></a>
-        <div class="card-body">
-          <p class="card-text"><a href="#" class="btn-link2 text-dark">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</a></p>
-          <div class="d-flex justify-content-between align-items-center">
+        <div class="card mb-md-4 mt-3 p-2 box-shadow">
+            <a href="#"><img class="card-img-top"
+                             data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail"
+                             alt="Thumbnail [100%x225]"
+                             src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22508%22%20height%3D%22225%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20508%20225%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_169ab71d0cf%20text%20%7B%20fill%3A%23eceeef%3Bfont-weight%3Abold%3Bfont-family%3AArial%2C%20Helvetica%2C%20Open%20Sans%2C%20sans-serif%2C%20monospace%3Bfont-size%3A25pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_169ab71d0cf%22%3E%3Crect%20width%3D%22508%22%20height%3D%22225%22%20fill%3D%22%2355595c%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22169.7578125%22%20y%3D%22123.6%22%3EThumbnail%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E"
+                             data-holder-rendered="true" style="height: 225px; width: 100%; display: block;"></a>
+            <div class="card-body">
+                <p class="card-text"><a href="#" class="btn-link2 text-dark">This is a wider card with supporting text
+                    below as a natural lead-in to additional content. This content is a little bit longer.</a></p>
+                <div class="d-flex justify-content-between align-items-center">
 
-            <small class="text-muted">25.06.2019</small>
-          </div>
+                    <small class="text-muted">25.06.2019</small>
+                </div>
+            </div>
         </div>
-      </div>
 
     </div>
     <div class="row">
-      <div class="col-12 mb-3">    <div class="your-class-arro text-right btn-block btn-group"></div>
-</div>
+        <div class="col-12 mb-3">
+            <div class="your-class-arro text-right btn-block btn-group"></div>
+        </div>
     </div>
-  </section>
-  <section class="d-md-block d-none bg-dark">
+</section>
+<section class="d-md-block d-none bg-dark">
     <div class="container">
-      <nav class="navbar navbar-expand-md navbar-dark">
-        <ul class="navbar-nav">
-          {% for category in category_list %}
+        <nav class="navbar navbar-expand-md navbar-dark">
+            <ul class="navbar-nav">
+                {% for category in category_list %}
 
-              <li class="nav-item flex-fill">
-                <a class="nav-link text-center" href="{% url 'catalog_category' city_slug=city cat_slug=category.slug %}">{{category.name}}
-                </a>
-              </li>
-              {% endfor %}
-        </ul>
-      </nav>
+                <li class="nav-item flex-fill">
+                    <a class="nav-link text-center"
+                       href="{% url 'catalog_category' city_slug=city cat_slug=category.slug %}">{{category.name}}
+                    </a>
+                </li>
+                {%empty%}
+                <li class="nav-item flex-fill">Нет категорий</li>
+                {% endfor %}
+            </ul>
+        </nav>
     </div>
-  </section>
-  <footer id="footer">
+</section>
+<footer id="footer">
     <div class="container">
-      <div class="row d-md-flex d-none py-4">
-        <div class="col-lg-3 col-md-6">
-          <ul class="nav">
-            <li class="btn-block">
-              <a href="#" class="btn-link streched-link text-secondary">Список компаний</a>
-            </li>
-            <li class="btn-block">
-              <a href="#" class="btn-link  text-secondary">Рейтинг компаний</a>
-            </li>
-            <li class="btn-block">
-              <a href="#" class="btn-link text-secondary">Аналитика</a>
-            </li>
-            <li class="btn-block">
-              <a href="#" class="btn-link text-secondary">Разместить заказ</a>
-            </li>
-            <li class="btn-block">
-              <a href="#" class="btn-link text-secondary">Все акции</a>
-            </li>
-            <li class="btn-block">
-              <a href="#" class="btn-link text-secondary">Как выбрать бетон</a>
-            </li>
-          </ul>
+        <div class="row d-md-flex d-none py-4">
+            <div class="col-lg-3 col-md-6">
+                <ul class="nav">
+                    <li class="btn-block">
+                        <a href="#" class="btn-link streched-link text-secondary">Список компаний</a>
+                    </li>
+                    <li class="btn-block">
+                        <a href="#" class="btn-link  text-secondary">Рейтинг компаний</a>
+                    </li>
+                    <li class="btn-block">
+                        <a href="#" class="btn-link text-secondary">Аналитика</a>
+                    </li>
+                    <li class="btn-block">
+                        <a href="#" class="btn-link text-secondary">Разместить заказ</a>
+                    </li>
+                    <li class="btn-block">
+                        <a href="#" class="btn-link text-secondary">Все акции</a>
+                    </li>
+                    <li class="btn-block">
+                        <a href="#" class="btn-link text-secondary">Как выбрать бетон</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <ul class="nav">
+                    <li class="btn-block">
+                        <a href="#" class="btn-link streched-link text-secondary">Список компаний</a>
+                    </li>
+                    <li class="btn-block">
+                        <a href="#" class="btn-link  text-secondary">Рейтинг компаний</a>
+                    </li>
+                    <li class="btn-block">
+                        <a href="#" class="btn-link text-secondary">Аналитика</a>
+                    </li>
+                    <li class="btn-block">
+                        <a href="#" class="btn-link text-secondary">Разместить заказ</a>
+                    </li>
+                    <li class="btn-block">
+                        <a href="#" class="btn-link text-secondary">Все акции</a>
+                    </li>
+                    <li class="btn-block">
+                        <a href="#" class="btn-link text-secondary">Как выбрать бетон</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <ul class="nav">
+                    <li class="btn-block">
+                        <a href="#" class="btn-link streched-link text-secondary">Список компаний</a>
+                    </li>
+                    <li class="btn-block">
+                        <a href="#" class="btn-link  text-secondary">Рейтинг компаний</a>
+                    </li>
+                    <li class="btn-block">
+                        <a href="#" class="btn-link text-secondary">Аналитика</a>
+                    </li>
+                    <li class="btn-block">
+                        <a href="#" class="btn-link text-secondary">Разместить заказ</a>
+                    </li>
+                    <li class="btn-block">
+                        <a href="#" class="btn-link text-secondary">Все акции</a>
+                    </li>
+                    <li class="btn-block">
+                        <a href="#" class="btn-link text-secondary">Как выбрать бетон</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <ul class="nav">
+                    <li class="btn-block">
+                        <a href="#" class="btn-link streched-link text-secondary">Список компаний</a>
+                    </li>
+                    <li class="btn-block">
+                        <a href="#" class="btn-link  text-secondary">Рейтинг компаний</a>
+                    </li>
+                    <li class="btn-block">
+                        <a href="#" class="btn-link text-secondary">Аналитика</a>
+                    </li>
+                    <li class="btn-block">
+                        <a href="#" class="btn-link text-secondary">ЖБИ</a>
+                    </li>
+                    <li class="btn-block">
+                        <a href="#" class="btn-link text-secondary">Все акции</a>
+                    </li>
+                    <li class="btn-block">
+                        <a href="#" class="btn-link text-secondary">Войти в Войти/Регистрация</a>
+                    </li>
+                </ul>
+            </div>
         </div>
-        <div class="col-lg-3 col-md-6">
-          <ul class="nav">
-            <li class="btn-block">
-              <a href="#" class="btn-link streched-link text-secondary">Список компаний</a>
-            </li>
-            <li class="btn-block">
-              <a href="#" class="btn-link  text-secondary">Рейтинг компаний</a>
-            </li>
-            <li class="btn-block">
-              <a href="#" class="btn-link text-secondary">Аналитика</a>
-            </li>
-            <li class="btn-block">
-              <a href="#" class="btn-link text-secondary">Разместить заказ</a>
-            </li>
-            <li class="btn-block">
-              <a href="#" class="btn-link text-secondary">Все акции</a>
-            </li>
-            <li class="btn-block">
-              <a href="#" class="btn-link text-secondary">Как выбрать бетон</a>
-            </li>
-          </ul>
+        <div class="row pb-4">
+            <div class="col-lg-3 col-md-5 text-center">
+                <a class="navbar-brand mt-1" href="#"><img src="/static/img/logo-reverse.png" alt=""
+                                                           class="img img-fluid"></a>
+            </div>
+            <div class="col-lg-6 col-md-4">
+                <p class="text-secondary text-center font-weight-light footer-text">Snab.org.ua - все права защищены,
+                    копирование запрещено.</p>
+            </div>
+            <div class="col-md-3 text-center">
+                <div class="mt-2"><a href="tel:8 800 200-24-06" data-toggle="tooltip" data-placement="top"
+                                     title="Звонок бесплатный" class="btn-link text-white"><i
+                        class="fas fa-phone mr-1"></i>8 800 200-24-06</a></div>
+                <div class="text-secondary ml-4">
+                    <small>Звонок бесплатный</small>
+                </div>
+            </div>
         </div>
-        <div class="col-lg-3 col-md-6">
-          <ul class="nav">
-            <li class="btn-block">
-              <a href="#" class="btn-link streched-link text-secondary">Список компаний</a>
-            </li>
-            <li class="btn-block">
-              <a href="#" class="btn-link  text-secondary">Рейтинг компаний</a>
-            </li>
-            <li class="btn-block">
-              <a href="#" class="btn-link text-secondary">Аналитика</a>
-            </li>
-            <li class="btn-block">
-              <a href="#" class="btn-link text-secondary">Разместить заказ</a>
-            </li>
-            <li class="btn-block">
-              <a href="#" class="btn-link text-secondary">Все акции</a>
-            </li>
-            <li class="btn-block">
-              <a href="#" class="btn-link text-secondary">Как выбрать бетон</a>
-            </li>
-          </ul>
-        </div>
-        <div class="col-lg-3 col-md-6">
-          <ul class="nav">
-            <li class="btn-block">
-              <a href="#" class="btn-link streched-link text-secondary">Список компаний</a>
-            </li>
-            <li class="btn-block">
-              <a href="#" class="btn-link  text-secondary">Рейтинг компаний</a>
-            </li>
-            <li class="btn-block">
-              <a href="#" class="btn-link text-secondary">Аналитика</a>
-            </li>
-            <li class="btn-block">
-              <a href="#" class="btn-link text-secondary">ЖБИ</a>
-            </li>
-            <li class="btn-block">
-              <a href="#" class="btn-link text-secondary">Все акции</a>
-            </li>
-            <li class="btn-block">
-              <a href="#" class="btn-link text-secondary">Войти в Войти/Регистрация</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div class="row pb-4">
-        <div class="col-lg-3 col-md-5 text-center">
-          <a class="navbar-brand mt-1" href="#"><img src="/static/img/logo-reverse.png" alt="" class="img img-fluid"></a>
-        </div>
-        <div class="col-lg-6 col-md-4">
-          <p class="text-secondary text-center font-weight-light footer-text">BetonServis.ua - все права защищены, копирование запрещено.</p>
-        </div>
-        <div class="col-md-3 text-center">
-          <div class="mt-2"><a href="tel:8 800 200-24-06" data-toggle="tooltip" data-placement="top" title="Звонок бесплатный" class="btn-link text-white"><i class="fas fa-phone mr-1"></i>8 800 200-24-06</a></div>
-          <div class="text-secondary ml-4"><small>Звонок бесплатный</small></div>
-        </div>
-      </div>
     </div>
-  </footer>
-  <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+</footer>
+<div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Выбрать город</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="row">
-            {% for city in city_list %}
-            <div class="col-md-3 col-sm-6">
-              <a href="{% url 'catalog_city' city.slug %}">{{ city.name }}</a>
-            </div>
-            {% endfor %}
-
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="modal fade bd-example-modal" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal" role="document">
-<div class="modal-content">
+        <div class="modal-content">
             <div class="modal-header">
-              <h4 class="modal-title">Написать поставщику</h4>
-              {% for f in orderforms%}
-              <p>
-              {%for ff in f.errors%}
-              {{f.name}} - {{ff}}
-              {% endfor%}
-              </p>
-              {% endfor %}
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                          <span class="pt-1" aria-hidden="true">×</span>
-                        </button>
+                <h5 class="modal-title">Выбрать город</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-            <form  method="post">
-              <div class="modal-body">
-                {% csrf_token %}
-                <input type="hidden" id="ssst" name="{{orderforms.item.name}}" value="">
-                <div class="row">
-                  <div class="col-9">
-                    <ul id="selectors23">
-                      {% for c in cat %}
-                      <li>{{ c.name }}
-                        <ul>{% for subc in subcat %}
-                          {% if subc.category == c %}
-                          <li>{{ subc.name }}
-                            <ul>
-                              {% for t in tov %}
-                              {% if t.category == subc%}
-                                <li><button onclick="$('#ssst').val($(this).val())" type="button" class="btn pl-0 btn-block text-left btn-link" value="{{t.id}}">{{t.name}}</button></li>
-                              {% endif%}
-                              {% endfor %}
+            <div class="modal-body">
+                <input class="form-control" type="text" placeholder="Поиск города" id="elastic">
+            </div>
+            <div class="modal-body">
+
+                <div class="row elastic">
+                    {% for city in city_list %}
+                    <a href="{% url 'catalog_city' city.slug %}" class="col-md-3 col-sm-6 text-dark">{{ city.name }}</a>
+                    {% endfor %}
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade bd-example-modal" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Написать поставщику</h4>
+                {% for f in orderforms%}
+                <p>
+                    {%for ff in f.errors%}
+                    {{f.name}} - {{ff}}
+                    {% endfor%}
+                </p>
+                {% endfor %}
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span class="pt-1" aria-hidden="true">×</span>
+                </button>
+            </div>
+            <script>
+            function validates(){
+                var x=document.forms["forma"]["{{orderforms.item.name}}"].value;
+                if (x.length==0){
+                    document.getElementById("{{orderforms.item.name}}1").innerHTML="Выберите товар из списка";
+                    return false;
+                    }
+                }
+            </script>
+            <form method="post" name="forma" onsubmit="return validates()">
+                <div class="modal-body">
+                    <span class="danger" id="{{orderforms.item.name}}1"></span>
+                    <input type="hidden" id="ssst" name="{{orderforms.item.name}}" value="">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-9">
+                            <ul id="selectors23">
+                                {% for c in cat %}
+                                <li>{{ c.name }}
+                                    <ul>{% for subc in subcat %}
+                                        {% if subc.category == c %}
+                                        <li>{{ subc.name }}
+                                            <ul>
+                                                {% for t in tov %}
+                                                {% if t.category == subc%}
+                                                <li>
+                                                    <button onclick="$('#ssst').val($(this).val())" type="button"
+                                                            class="btn pl-0 btn-block text-left btn-link"
+                                                            value="{{t.id}}">{{t.name}}
+                                                    </button>
+                                                </li>
+                                                {% endif%}
+                                                {% endfor %}
+                                            </ul>
+                                            {% endif %}
+                                            {% endfor %}
+                                    </ul>
+                                </li>
+                                {% endfor %}
                             </ul>
-                          {% endif %}
-                          {% endfor %}
-                        </ul>
-                      </li>
-                      {% endfor %}
-                    </ul>
-                  </div>
-                  <div class="pl-0 col-3">
-                    <div class="input-group input-group-sm">
-                      <input type="text" name="{{orderforms.weight.name}}" class="form-control rounded-0 form-control-sm" id="inlineFormInputGroupUsername">
-                      <div class="input-group-append rounded-0">
-                        <div class="input-group-text rounded-0">м<sup><small>3</small></sup></div>
-                      </div>
-                    </div>
-                  </div>
-                  <script type="text/javascript">
+                        </div>
+                        <div class="pl-0 col-3">
+                            <div class="input-group input-group-sm">
+                                <input type="text" name="{{orderforms.weight.name}}"
+                                       class="form-control rounded-0 form-control-sm" id="inlineFormInputGroupUsername">
+                                <div class="input-group-append rounded-0">
+                                    <div class="input-group-text rounded-0">м<sup>
+                                        <small>3</small>
+                                    </sup></div>
+                                </div>
+                            </div>
+                        </div>
+                        <script type="text/javascript">
                     $('#selectors23').dropdown({
                       toggleText: 'Выберите продукт',
                       margin: 0,
                       autoResize: 0,
                       titleText: 'Выберите продукт'
                     });
-                  </script>
-                </div>
-              </div>
-              <div class="modal-body bg-light">
 
-                <textarea name="{{orderforms.detail.name}}" rows="3" class="form-control rounded-0 text-dark">Здравствуйте, меня интересуют эти позиции раздела: Металлопрокат. Сообщите пожалуйста цену и условия поставки на почту, либо по телефону.</textarea>
-                <div class="form-row mt-3">
-                  <div class="form-group col-sm-6">
-                    <label for="inputname4">Ваше имя</label>
-                    <input type="text" name="{{orderforms.name.name}}" required class="form-control" id="inputname4" placeholder="Ваше имя">
-                  </div>
-                  <div class="form-group col-sm-6">
-                    <label for="inputPassword4">Телефон</label>
-                    <input type="tel" name="{{orderforms.phone.name}}" required class="form-control" id="inputPassword4" placeholder="Телефон">
-                  </div>
+
+
+
+                        </script>
+                    </div>
                 </div>
-                <div class="form-row">
-                  <div class="form-group col-sm-6">
-                    <label for="inputPassword5">Почта</label>
-                    <input type="email" name="{{orderforms.email.name}}" required class="form-control" id="inputPassword5" placeholder="Электронная почта">
-                  </div>
-                  <div class="form-group col-sm-6">
-                    <label for="address1">Адрес</label>
-                    <input type="text" class="form-control rounded-0" required name="{{orderforms.adress.name}}" id="address1" placeholder="Адрес доставки" aria-label="Large" aria-describedby="inputGroup-sizing-sm">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <div class="form-check">
-                    <input class="form-check-input" name="{{orderforms.is_all.name}}" type="checkbox" value="on" id="invalidCheck3">
-                    <label class="form-check-label" for="invalidCheck3">
-                      Получить предложения от всех поставщиков города Киев
-                    </label>
-                  </div>
+                <div class="modal-body bg-light">
+
+                    <textarea name="{{orderforms.detail.name}}" rows="3" class="form-control rounded-0 text-dark">Здравствуйте, меня интересуют эти позиции раздела: Металлопрокат. Сообщите пожалуйста цену и условия поставки на почту, либо по телефону.</textarea>
+                    <div class="form-row mt-3">
+                        <div class="form-group col-sm-6">
+                            <label for="inputname4">Ваше имя</label>
+                            <input type="text" name="{{orderforms.name.name}}" required class="form-control"
+                                   id="inputname4" placeholder="Ваше имя">
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label for="inputPassword4">Телефон</label>
+                            <input type="tel" name="{{orderforms.phone.name}}" required class="form-control phone"
+                                   id="inputPassword4" placeholder="Телефон">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-sm-6">
+                            <label for="inputPassword5">Почта</label>
+                            <input type="email" name="{{orderforms.email.name}}" required class="form-control"
+                                   id="inputPassword5" placeholder="Электронная почта">
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label for="address1">Адрес</label>
+                            <input type="text" class="form-control rounded-0" required name="{{orderforms.adress.name}}"
+                                   id="address1" placeholder="Адрес доставки" aria-label="Large"
+                                   aria-describedby="inputGroup-sizing-sm">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input class="form-check-input" name="{{orderforms.is_all.name}}" type="checkbox" checked
+                                   value="on"
+                                   id="invalidCheck3">
+                            <label class="form-check-label" for="invalidCheck3">
+                                Получить предложения от всех поставщиков города Киев
+                            </label>
+                        </div>
+                    </div>
+
                 </div>
 
-              </div>
-
-              <div class="modal-footer justify-content-start">
-                <button type="submit" class="btn btn-outline-dark">Отправить</button>
-                <div>Нажимая кнопку "Отправить", Вы даете согласие на обработку персональных данных</div>
-              </div>
+                <div class="modal-footer justify-content-start">
+                    <button type="submit" class="btn btn-outline-dark">Отправить</button>
+                    <div>Нажимая кнопку "Отправить", Вы даете согласие на обработку персональных данных</div>
+                </div>
             </form>
-          </div>
+        </div>
     </div>
-  </div>
-  <script type="text/javascript">
+</div>
+<script type="text/javascript">
     $(function() {
       $('[data-toggle="tooltip"]').tooltip()
     });
@@ -523,12 +607,65 @@
         $('.navbar-nav li a[href="'+link+'"]').parent().addClass('active');
       });
     //Allows bootstrap carousels to display 3 items per page rather than just one
-  </script>
-  <script>
+
+
+
+
+</script>
+<script>
     $('.phone').text(function(i, text) {
       return text.replace(/(\d{3})(\d{3})(\d{2})(\d{2})/, '+38'+' ($1) $2-$3-$4');
   });
-  </script>
-</body>
 
+
+
+
+</script>
+<script src="/static/js/jquery.inputmask.bundle.js"></script>
+<script>
+$(document).ready(function(){
+  $(".phone").inputmask("+38(999) 999-99-99",{removeMaskOnSubmit:true});
+  $("#id_identificate").inputmask("999-999-99-99",{removeMaskOnSubmit:true});
+});
+
+
+
+
+</script>
+<script>
+    document.querySelector('#elastic').oninput = function () {
+    let val = this.value;
+    let elasticItems = document.querySelectorAll('.elastic a');
+    if (val != '') {
+        elasticItems.forEach(function (elem) {
+            if (elem.innerText.toLowerCase().search(val.toLowerCase()) == -1) {
+                elem.classList.add('d-none');
+                elem.innerHTML = elem.innerText;
+            }
+            else {
+                elem.classList.remove('d-none');
+                let str = elem.innerText;
+                elem.innerHTML = insertMark(str, elem.innerText.toLowerCase().search(val.toLowerCase()), val.length);
+            }
+        });
+    }
+    else {
+        elasticItems.forEach(function (elem) {
+            elem.classList.remove('d-none');
+            elem.innerHTML = elem.innerText;
+        });
+    }
+}
+
+function insertMark(string, pos, len) {
+    // hello world
+    // hello <mark>wo</mark>rld
+    // hello+<mark>+wo+</mark>+rld
+    return string.slice(0, pos) + '<mark>' + string.slice(pos, pos + len) + '</mark>' + string.slice(pos + len);
+}
+
+
+</script>
+
+</body>
 </html>

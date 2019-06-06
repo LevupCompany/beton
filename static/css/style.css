@@ -56,6 +56,13 @@ border-right: 0px;
 border-radius: 0px;
 box-shadow: none!important;
 }
+.yellow4, yellow4:focus{
+padding-left: 2.5em;
+border: 1.5px solid;
+border-color:#EFE902!important;
+border-radius: 0px;
+box-shadow: none!important;
+}
 .yellow3{
   border-right: 2px solid #EFE902!important;
   padding-left: 0.5em;
@@ -104,7 +111,7 @@ z-index: 99;
 
 }
 @media (max-width:991px){
-  .yellow2, .yellow2:focus{
+  .yellow1, yellow1:focus, .yellow2, .yellow2:focus{
     border-right: 2px solid #EFE902!important;
   }
 }

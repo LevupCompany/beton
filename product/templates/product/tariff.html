@@ -1,0 +1,68 @@
+{%extends 'cabinet.html'%}
+{%block content%}
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+          <h1 class="h2">Доска Тарифов</h1>
+
+        </div>
+
+        <div class="card-deck mb-3 text-center">
+      <div class="card mb-4 shadow-sm">
+        <div class="card-header">
+          <h4 class="my-0 font-weight-normal">Бесплатный</h4>
+        </div>
+        <div class="card-body">
+          <h1 class="card-title pricing-card-title">$0 <small class="text-muted">/ mo</small></h1>
+          <ul class="list-unstyled mt-3 mb-4">
+            <li>Отображаются заявки</li>
+            <li>Скрыты Email</li>
+            <li>Скрыты номера</li>
+            <li>Не влючается в ранжирование</li>
+            <li>Присутствует реклама в профиле</li>
+          </ul>
+            {%if tar.status == 1 %}
+          <button type="button" class="btn btn-lg btn-block btn-outline-dark" disabled="">Подключено</button>
+            {%else%}
+          <button type="button" class="btn btn-lg btn-block btn-outline-dark">Подключить</button>
+            {%endif%}
+        </div>
+      </div>
+      <div class="card mb-4 shadow-sm">
+        <div class="card-header">
+          <h4 class="my-0 font-weight-normal">Базовый</h4>
+        </div>
+        <div class="card-body">
+          <h1 class="card-title pricing-card-title">$15 <small class="text-muted">/ mo</small></h1>
+          <ul class="list-unstyled mt-3 mb-4">
+            <li>Отображаются заявки</li>
+            <li>Отображаются Email</li>
+            <li>Скрыты номера</li>
+            <li>Ранжирование в рейтинге поставщиков</li>
+            <li>Отсутствует реклама в профиле</li>
+          </ul>
+            {%if tar.status == 2 %}
+          <button type="button" class="btn btn-lg btn-block btn-outline-dark" disabled="">Подключено</button>
+            {%else%}
+          <button type="button" class="btn btn-lg btn-block btn-outline-dark">Подключить</button>
+            {%endif%}        </div>
+      </div>
+      <div class="card mb-4 shadow-sm">
+        <div class="card-header">
+          <h4 class="my-0 font-weight-normal">Расширенный</h4>
+        </div>
+        <div class="card-body">
+          <h1 class="card-title pricing-card-title">$29 <small class="text-muted">/ mo</small></h1>
+          <ul class="list-unstyled mt-3 mb-4">
+            <li>Отображаются заявки</li>
+            <li>Отображаются Email</li>
+            <li>Отображаются номера</li>
+            <li>Ранжирование в рейтингах</li>
+            <li>Возможность добавления рекламы</li>
+          </ul>
+            {%if tar.status == 3 %}
+          <button type="button" class="btn btn-lg btn-block btn-outline-dark" disabled="">Подключено</button>
+            {%else%}
+          <button type="button" class="btn btn-lg btn-block btn-outline-dark">Подключить</button>
+            {%endif%}        </div>
+      </div>
+    </div>
+{%endblock%}

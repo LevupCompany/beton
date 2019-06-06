@@ -20,18 +20,20 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = '2&2_tux*8yivx&@k7661s_t-p)dqm5tr1+m5=zjzf$n8+$sigz'
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '2&2_tux*8yivx&@k7661s_t-p)dqm5tr1+m5=zjzf$n8+$sigz')
+SECRET_KEY = '2&2_tux*8yivx&@k7661s_t-p)dqm5tr1+m5=zjzf$n8+$sigz'
+# SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '2&2_tux*8yivx&@k7661s_t-p)dqm5tr1+m5=zjzf$n8+$sigz')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
-DEBUG = bool(os.environ.get('DJANGO_DEBUG', False))
+DEBUG = True
+# DEBUG = bool(os.environ.get('DJANGO_DEBUG', False))
 
-ALLOWED_HOSTS = ['beton24.herokuapp.com','127.0.0.1']
+# ALLOWED_HOSTS = ['beton24.herokuapp.com','127.0.0.1']
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
-# Application definition
-
+# Host for sending e-mail.
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = 1025
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -45,6 +47,7 @@ INSTALLED_APPS = [
     'catalog',
     'felixuser',
     'product',
+    'googlecharts',
 ]
 
 MIDDLEWARE = [
@@ -73,8 +76,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                # 'context_processors.main_menu.menu',
-                # 'context_processors.main_menu.order',
+                'context_processors.main_menu.menu',
+                'context_processors.main_menu.order',
+                'context_processors.main_menu.notify',
 
             ],
         },
@@ -94,7 +98,12 @@ DATABASES = {
     }
 }
 
-
+DJANGORESIZED_DEFAULT_SIZE = [1920, 1080]
+DJANGORESIZED_DEFAULT_QUALITY = 75
+DJANGORESIZED_DEFAULT_KEEP_META = True
+DJANGORESIZED_DEFAULT_FORCE_FORMAT = 'JPEG'
+DJANGORESIZED_DEFAULT_FORMAT_EXTENSIONS = {'JPEG': ".jpg"}
+DJANGORESIZED_DEFAULT_NORMALIZE_ROTATION = True
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
 
@@ -116,9 +125,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
-
+LOGIN_URL='/login/'
 LANGUAGE_CODE = 'ru-ru'
-
 TIME_ZONE = 'Europe/Kiev'
 
 USE_I18N = True
@@ -138,6 +146,3 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
 
 # Heroku: Update database configuration from $DATABASE_URL.
-import dj_database_url
-db_from_env = dj_database_url.config(conn_max_age=500)
-DATABASES['default'].update(db_from_env)

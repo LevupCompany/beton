@@ -1,47 +1,68 @@
 {% extends "index.htm" %}
 {%block content %}
-  <section class="bg-light">
+<section class="bg-light">
     <div class="container">
-      <ol class="breadcrumb px-0 bg-light" itemtype="http://schema.org/BreadcrumbList">
-        <li class="breadcrumb-item" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-          <a itemscope itemtype="http://schema.org/Thing" class="text-dark" itemprop="item" href="#">
-            <span itemprop="name">Главная</span>
-            <meta itemprop="position" content="1" />
-          </a>
-        </li>
-        <li class="breadcrumb-item" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-          <a itemscope itemtype="http://schema.org/Thing" class="text-dark" itemprop="item" href="#">
-            <span itemprop="name">Бетон</span>
-            <meta itemprop="position" content="2" />
-          </a>
-        </li>
-        <li class="breadcrumb-item active" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" aria-current="page">
-          <span itemprop="name">Бетон</span>
-          <meta itemprop="position" content="1" />
-        </li>
-      </ol>
-      <div class="search_results">
-        <div class="search_tags reqast text-center text-md-left text-lg-left text-xl-left">
-          {% for tag in tovar %}
-          <a href="{% url 'catalog_tovar' city_slug=city cat_slug=cat_slug subcat_slug=cat_slug tovar_slug=tag.slug %}" class="btn rounded-0 mt-2 mr-2 btn-outline-dark">{{tag.name}}</a>
 
-          {%endfor%}
-        </div>
-        <script type="text/javascript">
+        <ol class="breadcrumb px-0 bg-light" itemtype="http://schema.org/BreadcrumbList">
+            <li class="breadcrumb-item" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                <a itemscope itemtype="http://schema.org/Thing" class="text-dark" itemprop="item" href="{%url 'home'%}">
+                    <span itemprop="name">Главная</span>
+                    <meta itemprop="position" content="1"/>
+                </a>
+            </li>
+            <li class="breadcrumb-item" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                <a itemscope itemtype="http://schema.org/Thing" class="text-dark" itemprop="item" href="{%url 'catalog_category' city_slug=city cat_slug=cat_slug%}">
+                    <span itemprop="name">{{cts}}</span>
+                    <meta itemprop="position" content="2"/>
+                </a>
+            </li>
+            {%if tovar_item is not None%}
+            <li class="breadcrumb-item" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                <a itemscope itemtype="http://schema.org/Thing" class="text-dark" itemprop="item" href="{%url 'catalog_subcategory' city_slug=city cat_slug=cat_slug subcat_slug=subcat_slug%}">
+                    <span itemprop="name">{{subcathegory}}</span>
+                    <meta itemprop="position" content="2"/>
+                </a>
+            </li>
+            <li class="breadcrumb-item active" itemprop="itemListElement" itemscope
+                itemtype="http://schema.org/ListItem" aria-current="page">
+                <span itemprop="name">{{tovar_item}}</span>
+                <meta itemprop="position" content="1"/>
+            </li>
+            {%else%}
+            <li class="breadcrumb-item active" itemprop="itemListElement" itemscope
+                itemtype="http://schema.org/ListItem" aria-current="page">
+                <span itemprop="name">{{subcathegory}}</span>
+                <meta itemprop="position" content="1"/>
+            </li>
+            {%endif%}
+        </ol>
+        <div class="search_results">
+            <div class="search_tags reqast text-center text-md-left text-lg-left text-xl-left">
+                {% for tag in tovar %}
+                <a href="{% url 'catalog_tovar' city_slug=city cat_slug=cat_slug subcat_slug=subcat_slug tovar_slug=tag.slug %}"
+                   class="btn rounded-0 mt-2 mr-2 btn-outline-dark">{{tag.name}}</a>
+
+                {%endfor%}
+                {{tar}}
+            </div>
+            <script type="text/javascript">
           $(document).ready(function(){
               var link = window.location.pathname;
               $('.reqast a[href="'+link+'"]').addClass('active');
             });
-        </script>{{product}}
-        <div class="search_items bg-white py-5 mt-5 mb-0 rounded-0 shadow-sm">
-          {% for item in product%}
-          <div class="search_item">
-            <div class="row p-3">
-              <div class="col-xl-5 my-2 col-md-8 col-12">
-                <div class="">
-                  <a href="" class="btn-link text-dark">{{item.company.company}} - </a>
-                  <div class="d-inline ml-3  mt-1 mr-2" id="rating_{{item.id}}"></div><span>{{item.company.rating.average_range|floatformat}}</span>
-                  <script type="text/javascript">
+
+            </script>
+            <div class="search_items bg-white py-5 mt-5 mb-0 rounded-0 shadow-sm">
+
+                {% for item in product%}
+                <div class="search_item">
+                    <div class="row p-3">
+                        <div class="col-xl-5 my-2 col-md-8 col-12">
+                            <div class="">
+                                <a href="{% url 'company' pk=item.company.id %}" class="btn-link text-dark">{{item.company.company}}</a>
+                                <div class="d-inline ml-3  mt-1 mr-2" id="rating_{{item.id}}"></div>
+                                <span>{{item.company.rating.average_range|floatformat}}</span>
+                                <script type="text/javascript">
                     $('#rating_{{item.id}}').raty({
                       starType: 'i',
                       half: true,
@@ -49,197 +70,224 @@
                       score: {{item.company.rating.average_range|floatformat}},
                       targetType: 'score'
                     });
-                  </script>
-                  <div class="text-secondary">{{ subcathegory}}</div>
-                </div>
-              </div>
-              <div class="col-xl-2  my-2 d-none d-md-flex col-md-4 justify-content-md-end">
-                <div class="">
-                  <i class="fas fa-truck-moving"></i> <span>{{item.company.city}}</span>
-                  <div class="text-secondary ml-4"> <small>404 км</small></div>
-                </div>
-              </div>
-              <div class="col-xl-3  my-2 col-6">
-                <div class="">
-                  От <span>{{ item.price}}</span> <span>₴/м<sup><small>3</small></sup></span>
-                </div>
-                <div class="">
-                  <button class="d-none d-md-block btn-link btn p-0 text-dark" type="button" data-toggle="modal" data-target=".bd-example-modal-x">Получить цену от поставщиков</button>
-                </div>
-                <div class="modal fade bd-example-modal-x" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
-                  <div class="modal-dialog modal-dialog-centered modal" role="document">
-                    <div class="modal-content">
-            <div class="modal-header">
-              <h4 class="modal-title">Написать поставщику</h4>
-              {% for f in orderform%}
-              <p>
-              {%for ff in f.errors%}
-              {{f.name}} - {{ff}}
-              {% endfor%}
-              </p>
-              {% endfor %}
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                          <span class="pt-1" aria-hidden="true">×</span>
-                        </button>
-            </div>
-            <form  method="post">
-              <div class="modal-body">
-                {% csrf_token %}
-                <input type="hidden" id="sss{{item.company.user.id}}" name="{{orderform.item.name}}" value="">
-                <input type="hidden" name="{{orderform.vendor.name}}" value="{{item.company.user.id}}">
-                <div class="row">
-                  <div class="col-9">
-                    <ul id="selectors{{item.company.user.id}}">
-                      {% for c in cat %}
-                      <li>{{ c.name }}
-                        <ul>{% for subc in subcat %}
-                          {% if subc.category == c %}
-                          <li>{{ subc.name }}
-                            <ul>
-                              {% for t in tov %}
-                              {% if t.category == subc%}
-                                <li><button onclick="$('#sss{{item.company.user.id}}').val($(this).val())" type="button" class="btn pl-0 btn-block text-left btn-link" value="{{t.id}}">{{t.name}}</button></li>
-                              {% endif%}
-                              {% endfor %}
-                            </ul>
-                          {% endif %}
-                          {% endfor %}
-                        </ul>
-                      </li>
-                      {% endfor %}
-                    </ul>
-                  </div>
-                  <div class="pl-0 col-3">
-                    <div class="input-group input-group-sm">
-                      <input type="text" name="{{orderform.weight.name}}" class="form-control rounded-0 form-control-sm" id="inlineFormInputGroupUsername">
-                      <div class="input-group-append rounded-0">
-                        <div class="input-group-text rounded-0">м<sup><small>3</small></sup></div>
-                      </div>
-                    </div>
-                  </div>
-                  <script type="text/javascript">
+
+                                </script>
+                                <div class="text-secondary">{{ subcathegory}}</div>
+                            </div>
+                        </div>
+                        <div class="col-xl-2  my-2 d-none d-md-flex col-md-4 justify-content-md-end">
+                            <div class="">
+                                <i class="fas fa-truck-moving"></i> <span>{{item.company.city}}</span>
+                                <div class="text-secondary ml-4">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3  my-2 col-6">
+                            <div class="">
+                                От <span>{{ item.price}}</span> <span>₴/{{subcathegory.weight| safe}}</span>
+                            </div>
+                            <div class="">
+                                <button class="d-none d-md-block btn-link btn p-0 text-dark" type="button"
+                                        data-toggle="modal" data-target=".bd-example-modal-x">Получить цену от
+                                    поставщиков
+                                </button>
+                            </div>
+                            <div class="modal fade bd-example-modal-x" tabindex="-1" role="dialog"
+                                 aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered modal" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">Написать поставщику</h4>
+                                            {% for f in orderform%}
+                                            <p>
+                                                {%for ff in f.errors%}
+                                                {{f.name}} - {{ff}}
+                                                {% endfor%}
+                                            </p>
+                                            {% endfor %}
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span class="pt-1" aria-hidden="true">×</span>
+                                            </button>
+                                        </div>
+                                        <form method="post">
+                                            <div class="modal-body">
+                                                {% csrf_token %}
+                                                <input type="hidden" id="sss{{item.company.user.id}}"
+                                                       name="{{orderform.item.name}}" value="">
+                                                <input type="hidden" name="{{orderform.vendor.name}}"
+                                                       value="{{item.company.user.id}}">
+                                                <div class="row">
+                                                    <div class="col-9">
+                                                        <ul id="selectors{{item.company.user.id}}">
+                                                            {% for c in cat %}
+                                                            <li>{{ c.name }}
+                                                                <ul>{% for subc in subcat %}
+                                                                    {% if subc.category == c %}
+                                                                    <li>{{ subc.name }}
+                                                                        <ul>
+                                                                            {% for t in tov %}
+                                                                            {% if t.category == subc%}
+                                                                            <li>
+                                                                                <button onclick="$('#sss{{item.company.user.id}}').val($(this).val())"
+                                                                                        type="button"
+                                                                                        class="btn pl-0 btn-block text-left btn-link"
+                                                                                        value="{{t.id}}">{{t.name}}
+                                                                                </button>
+                                                                            </li>
+                                                                            {% endif%}
+                                                                            {% endfor %}
+                                                                        </ul>
+                                                                        {% endif %}
+                                                                        {% endfor %}
+                                                                </ul>
+                                                            </li>
+                                                            {% endfor %}
+                                                        </ul>
+                                                    </div>
+                                                    <div class="pl-0 col-3">
+                                                        <div class="input-group input-group-sm">
+                                                            <input type="text" name="{{orderform.weight.name}}"
+                                                                   class="form-control rounded-0 form-control-sm"
+                                                                   id="inlineFormInputGroupUsername">
+                                                            <div class="input-group-append rounded-0">
+                                                                <div class="input-group-text rounded-0">м<sup>
+                                                                    <small>3</small>
+                                                                </sup></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <script type="text/javascript">
                     $('#selectors{{item.company.user.id}}').dropdown({
                       toggleText: 'Выберите продукт',
                       margin: 0,
                       autoResize: 0,
                       titleText: 'Выберите продукт'
                     });
-                  </script>
-                </div>
-              </div>
-              <div class="modal-body bg-light">
 
-                <textarea name="{{orderform.detail.name}}" rows="3" class="form-control rounded-0 text-dark">Здравствуйте, меня интересуют эти позиции раздела: Металлопрокат. Сообщите пожалуйста цену и условия поставки на почту, либо по телефону.</textarea>
-                <div class="form-row mt-3">
-                  <div class="form-group col-sm-6">
-                    <label for="inputname4">Ваше имя</label>
-                    <input type="text" name="{{orderform.name.name}}" required class="form-control" id="inputname4" placeholder="Ваше имя">
-                  </div>
-                  <div class="form-group col-sm-6">
-                    <label for="inputPassword4">Телефон</label>
-                    <input type="tel" name="{{orderform.phone.name}}" required class="form-control" id="inputPassword4" placeholder="Телефон">
-                  </div>
-                </div>
-                <div class="form-row">
-                  <div class="form-group col-sm-6">
-                    <label for="inputPassword5">Почта</label>
-                    <input type="email" name="{{orderform.email.name}}" required class="form-control" id="inputPassword5" placeholder="Электронная почта">
-                  </div>
-                  <div class="form-group col-sm-6">
-                    <label for="address1">Адрес</label>
-                    <input type="text" class="form-control rounded-0" required name="{{orderform.adress.name}}" id="address1" placeholder="Адрес доставки" aria-label="Large" aria-describedby="inputGroup-sizing-sm">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <div class="form-check">
-                    <input class="form-check-input" name="{{orderform.is_all.name}}" type="checkbox" value="on" id="invalidCheck3">
-                    <label class="form-check-label" for="invalidCheck3">
-                      Получить предложения от всех поставщиков города Киев
-                    </label>
-                  </div>
-                </div>
+                                                    </script>
+                                                </div>
+                                            </div>
+                                            <div class="modal-body bg-light">
 
-              </div>
+                                                <textarea name="{{orderform.detail.name}}" rows="3"
+                                                          class="form-control rounded-0 text-dark">Здравствуйте, меня интересуют эти позиции раздела: Металлопрокат. Сообщите пожалуйста цену и условия поставки на почту, либо по телефону.</textarea>
+                                                <div class="form-row mt-3">
+                                                    <div class="form-group col-sm-6">
+                                                        <label for="inputname4">Ваше имя</label>
+                                                        <input type="text" name="{{orderform.name.name}}" required
+                                                               class="form-control" id="inputname4"
+                                                               placeholder="Ваше имя">
+                                                    </div>
+                                                    <div class="form-group col-sm-6">
+                                                        <label for="inputPassword4">Телефон</label>
+                                                        <input type="tel" name="{{orderform.phone.name}}" required
+                                                               class="form-control phone" id="inputPassword4"
+                                                               placeholder="Телефон">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col-sm-6">
+                                                        <label for="inputPassword5">Почта</label>
+                                                        <input type="email" name="{{orderform.email.name}}" required
+                                                               class="form-control" id="inputPassword5"
+                                                               placeholder="Электронная почта">
+                                                    </div>
+                                                    <div class="form-group col-sm-6">
+                                                        <label for="address1">Адрес</label>
+                                                        <input type="text" class="form-control rounded-0" required
+                                                               name="{{orderform.adress.name}}" id="address1"
+                                                               placeholder="Адрес доставки" aria-label="Large"
+                                                               aria-describedby="inputGroup-sizing-sm">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" name="{{orderform.is_all.name}}"
+                                                               type="checkbox" value="on" id="invalidCheck3">
+                                                        <label class="form-check-label" for="invalidCheck3">
+                                                            Получить предложения от всех поставщиков города Киев
+                                                        </label>
+                                                    </div>
+                                                </div>
 
-              <div class="modal-footer justify-content-start">
-                <button type="submit" class="btn btn-outline-dark">Отправить</button>
-                <div>Нажимая кнопку "Отправить", Вы даете согласие на обработку персональных данных</div>
-              </div>
-            </form>
-          </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-xl-2 my-2 col-6 text-right">
-                <button type="button" class="btn p-2 p-md-3 p-lg-3 p-sm-3 p-xl-3 btn-outline-dark" data-toggle="modal" data-target="#bd-modal-x"><i class="fas fa-phone"></i></button>
-                <div class="modal fade" id="bd-modal-x" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
-                  <div class="modal-dialog modal-dialog-centered modal" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h4 class="modal-title">Менеджер компании</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                          <span class="pt-1" aria-hidden="true">&times;</span>
-                        </button>
-                      </div>
+                                            </div>
 
-                        <div class="modal-body">
-                          <div class="row text-center text-md-left">
-                            <div class="col-md-3">
-                              <img src="./static/img/graphics-no-manager-image.svg" alt="" class="img rounded-circle img-fluid">
+                                            <div class="modal-footer justify-content-start">
+                                                <button type="submit" class="btn btn-outline-dark">Отправить</button>
+                                                <div>Нажимая кнопку "Отправить", Вы даете согласие на обработку
+                                                    персональных данных
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-md-9">
-                              <p class="h5">{{item.company.manager}}</p>
-                              <p class="h5 text-secondary">{{item.company.company}}</p>
-                              <div class="mt-3">
-                                <i class="fas fa-phone"></i> <a href="tel:{{item.company.phone}}" class="phone h5 ml-2 d-inline">{{item.company.phone}}</a>
-                              </div>
-                            </div>
-                          </div>
                         </div>
+                        <div class="col-xl-2 my-2 col-6 text-right">
+                            <button type="button" class="btn p-2 p-md-3 p-lg-3 p-sm-3 p-xl-3 btn-outline-dark"
+                                    data-toggle="modal" data-target="#bd-modal-x"><i class="fas fa-phone"></i></button>
+                            <div class="modal fade" id="bd-modal-x" tabindex="-1" role="dialog"
+                                 aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered modal" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">Менеджер компании</h4>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span class="pt-1" aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+
+                                        <div class="modal-body">
+                                            <div class="row text-center text-md-left">
+                                                <div class="col-md-3">
+                                                    <img src="./static/img/graphics-no-manager-image.svg" alt=""
+                                                         class="img rounded-circle img-fluid">
+                                                </div>
+                                                <div class="col-md-9">
+                                                    <p class="h5">{{item.company.manager}}</p>
+                                                    <p class="h5 text-secondary">{{item.company.company}}</p>
+                                                    <div class="mt-3">
+                                                        <i class="fas fa-phone"></i> <a
+                                                            href="tel:{{item.company.phone}}"
+                                                            class="phone h5 ml-2 d-inline">{{item.company.phone}}</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
 
 
-                        <div class="modal-footer justify-content-start">
-                          <button class="btn btn-outline-dark" data-dismiss="modal" aria-label="Close" type="button" data-toggle="modal" data-target=".bd-example-modal">Связаться</button>
-                          <div class="text-left">
-                            <p>Не дозвонились?</p>
-                            <p>Получите индивидуальные предложения от всех поставщиков в городе </p>
-                          </div>
+                                        <div class="modal-footer justify-content-start">
+                                            <button class="btn btn-outline-dark" data-dismiss="modal" aria-label="Close"
+                                                    type="button" data-toggle="modal" data-target=".bd-example-modal">
+                                                Связаться
+                                            </button>
+                                            <div class="text-left">
+                                                <p>Не дозвонились?</p>
+                                                <p>Получите индивидуальные предложения от всех поставщиков в городе </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="{% url 'company' pk=item.company.id %}"
+                               class="btn p-1 p-md-2 p-lg-2 p-sm-2 p-xl-2 btn-outline-dark">
+                                <div class="my-sm-1 my-md-1 my-lg-1 my-xl-1">Открыть</div>
+                            </a>
                         </div>
                     </div>
-                  </div>
                 </div>
-                <a href="{% url 'company' pk=item.company.id %}" class="btn p-1 p-md-2 p-lg-2 p-sm-2 p-xl-2 btn-outline-dark">
-                  <div class="my-sm-1 my-md-1 my-lg-1 my-xl-1">Открыть</div>
-                </a>
-              </div>
-            </div>
-          </div>
-          {% empty%}
-          <div class="search_item"><div class="text-center h3">Нет предложений</div>
-          </div>
+                {% empty%}
+                <div class="search_item">
+                    <div class="text-center h3">Нет предложений</div>
+                </div>
 
-          {% endfor %}
+                {% endfor %}
+            </div>
         </div>
-      </div>
     </div>
-  </section>
-  <section class="bg-light" id="sales">
-    <div class="container">
-      <h4 class="pt-5">Акции на бетон в городе <a href="#bd-example-modal-xl" class="ml-1 btn-link modal-link" data-toggle="modal" data-target=".bd-example-modal-xl">Киев</a></h4>
-      <div class="row   py-5">
-        <div class="my-2 col-md-6">
-          <div class="bg-secondary thumbnail p-4" style="background-image:url('/static/img/2.png')">
-            <h3 class="ml-0 pl-0 text-uppercase col-9">Доставка бетона по Киеву и всей Киевской области</h3>
-            <a href="#" class="btn mt-4 col-4 btn-block btn-outline-primary">Подробнее</a>
-          </div>
-        </div>
-        <div class="my-2 col-md-6">
-          <div class="bg-secondary thumbnail p-4" style="background-image:url('/static/img/3.png')">
-            <h3 class="ml-0 pl-0 text-uppercase text-white col-9">Доставка бетона по Киеву и всей Киевской области</h3>
-            <a href="#" class="btn mt-4 col-4 btn-block btn-outline-primary">Подробнее</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  {% endblock %}
+</section>
+
+{% endblock %}
+{%block reklama%}
+{% include 'reklama.html'%}
+{%endblock%}

@@ -13,7 +13,10 @@ class CreateOrderr(forms.ModelForm):
 class CreateOrders(forms.ModelForm):
     class Meta:
         model = Order
-        fields = ('name','phone','detail','email','adress','item','weight')
+        fields = ('name','vendor','phone','detail','email','adress','item','weight')
+        widgets = {'vendor': forms.HiddenInput(),'phone': forms.TextInput(attrs={"type": "tel", "class": 'phone'})}
+
+
 # class CreateReview(forms.ModelForm):
 #     range = forms.Number
 #     class Meta:

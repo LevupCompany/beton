@@ -1,13 +1,15 @@
 {%extends 'cabinet.html'%}
 {%block content%}
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-          <h1 class="h2">Доска Заказов ({{order_list.count}})</h1>
+          <h1 class="h2">Доска Заказов ({{order_list.count}}) {%if s is not None%}({{s.name}}){%endif%}</h1>
           <div class="btn-toolbar btn-group mb-2 mb-md-0" role="group" aria-label="Basic example">
             <div class="input-group-prepend">
               <button class="btn btn-outline-dark rounded-0 dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Категория</button>
               <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
+                {% for s in spec.all %}
+                <a class="dropdown-item" href="{%url 'order_cat' pk=s.id%}">{{s}}</a>
+                {% endfor%}
+
               </div>
             </div>
           </div>
@@ -32,9 +34,9 @@
             <div class="row">
               <div class="col-sm-1">{{o.date|date:'d-m-Y'}}</div>
               <div class="col-sm-2">{{o.name}}</div>
-              <div class="col-sm-2"><a href="tel:{{o.phone}}" class="btn-link phone text-dark">{{o.phone}}</a></div>
-              <div class="col-sm-2"><a href="mailto:{{o.email}}" class="btn-link text-dark">{{o.email}}</a></div>
-              <div class="col-sm-2">{{o.item}}</div>
+              <div class="col-sm-2">{%if tar.status == 3%}<a href="tel:{{o.phone}}" class="btn-link phone text-dark">{{o.phone}}{%else%}</a>+38(***) ***-**-**{%endif%}</div>
+              <div class="col-sm-2">{%if tar.status != 1%}<a href="mailto:{{o.email}}" class="btn-link text-dark">{{o.email}}</a>{%else%}********{%endif%}</div>
+              <div class="col-sm-2">{{o.item}} {{o.item.category.category}}</div>
               <div class="col-sm-2">{{o.city}}, {{o.adress}}</div>
               <div class="col-sm-1 h5">
                 {% if o.check == True %}
@@ -49,17 +51,18 @@
             </div>
           </li>
           {% endfor %}
+          {% if request_list.all%}
           <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h1 class="h2 mt-3">Доска Запросов ({{request_list.count}})</h1>
           </div>
-
+          {%endif%}
           {% for o in request_list %}
           <li class="list-group-item">
             <div class="row">
               <div class="col-sm-1">{{o.date|date:'d-m-Y'}}</div>
               <div class="col-sm-2">{{o.name}}</div>
-              <div class="col-sm-2"><a href="tel:{{o.phone}}" class="btn-link phone text-dark">{{o.phone}}</a></div>
-              <div class="col-sm-2"><a href="mailto:{{o.email}}" class="btn-link text-dark">{{o.email}}</a></div>
+              <div class="col-sm-2">{%if tar.status == 3%}<a href="tel:{{o.phone}}" class="btn-link phone text-dark">{{o.phone}}{%else%}</a>+38(***) ***-**-**{%endif%}</div>
+              <div class="col-sm-2">{%if tar.status != 1%}<a href="mailto:{{o.email}}" class="btn-link text-dark">{{o.email}}</a>{%else%}********{%endif%}</div>
               <div class="col-sm-2">{{o.item}}</div>
               <div class="col-sm-3">{{o.city}}, {{o.adress}}</div>
             </div>

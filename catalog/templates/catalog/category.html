@@ -1,21 +1,21 @@
 {% extends "index.htm" %}
 {%block content %}
 <section class="container">
-  <h4 class="mt-5">Цены на в городе <a href="#bd-example-modal-xl" class="ml-1 btn-link modal-link" data-toggle="modal" data-target=".bd-example-modal-xl">{{city_name}}</a></h4>
+  <h4 class="mt-5">Цены на {{cath}} в городе <a href="#bd-example-modal-xl" class="ml-1 btn-link modal-link" data-toggle="modal" data-target=".bd-example-modal-xl">{{city_name}}</a></h4>
   <div class="card-deck my-5">
     {% for category in subcat_list %}
     <div class="card my-5">
       <div class="card-header"> <img src="/{{category.image.url}}" class="img img-logo img-fluid" alt="">
-        <a class="text-dark"href="{%url 'catalog_subcategory' city_slug=city cat_slug=cath.slug subcat_slug=category.slug%}"><h4 class="mt-5 font-weight-bold text-center">{{category.name}}</h4>
+        <a class="text-dark"href="{%url 'catalog_subcategory' city_slug=city cat_slug=cath.slug subcat_slug=category.slug%}"><h4 class="mt-5 font-weight-bold text-center">{{category.name}}</h4></a>
       </div>
       <div class="card-body">
         {% for subcategory in tovar_list %}
-        {% if subcategory.category == category %}
+        {% if subcategory.name.category == category %}
 
-          <a href="{% url 'catalog_tovar' city_slug=city cat_slug=cath.slug subcat_slug=category.slug tovar_slug=subcategory.slug%}" class="btn-link row my-3 text-dark"><div class="col-7 text-left">
-            {{subcategory.name}}
+          <a href="{% url 'catalog_tovar' city_slug=city cat_slug=cath.slug subcat_slug=category.slug tovar_slug=subcategory.name.slug%}" class="btn-link row my-3 text-dark"><div class="col-7 text-left">
+            {{subcategory.name.name}}
             </div>
-          <div class="col-5 text-right">от 3 305 грн</div></a>
+          <div class="col-5 text-right">от {{subcategory.name.minimus.average_price}} грн</div></a>
           {% endif %}
         {% endfor %}
       </div>
@@ -23,28 +23,11 @@
     {% endfor %}
 
   </div>
-  <div class="text-center mb-5">
-    <a href="#" class="btn-link text-dark ">Показать ещё</a>
-  </div>
-</section>
-<section class="bg-light" id="sales">
-  <div class="container">
-    <h4 class="pt-5">Акции на бетон в городе <a href="#bd-example-modal-xl" class="ml-1 btn-link modal-link" data-toggle="modal" data-target=".bd-example-modal-xl">Киев</a></h4>
-    <div class="row   py-5">
-      <div class="my-2 col-md-6">
-        <div class="bg-secondary thumbnail p-4" style="background-image:url('/static/img/2.png')">
-          <h4 class="ml-0 pl-0 text-uppercase font-weight-bold col-9">Доставка бетона по Киеву и всей Киевской области</h4>
-
-          <a href="#" class="btn mt-4 col-4 btn-block btn-outline-dark">Подробнее</a>
-        </div>
-      </div>
-      <div class="my-2 col-md-6">
-        <div class="bg-secondary thumbnail p-4" style="background-image:url('/static/img/3.png')">
-          <h4 class="ml-0 pl-0 text-uppercase font-weight-bold text-white col-9">Доставка бетона по Киеву и всей Киевской области</h4>
-          <a href="#" class="btn mt-4 col-4 btn-block btn-outline-light">Подробнее</a>
-        </div>
-      </div>
-    </div>
-  </div>
+<!--  <div class="text-center mb-5">-->
+<!--    <a href="#" class="btn-link text-dark ">Показать ещё</a>-->
+<!--  </div>-->
 </section>
 {% endblock %}
+{%block reklama%}
+{% include 'reklama.html'%}
+{%endblock%}

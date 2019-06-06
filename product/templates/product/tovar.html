@@ -1,13 +1,14 @@
 {%extends 'cabinet.html'%}
 {%block content%}
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-          <h1 class="h2">Доска Заказов</h1>
+          <h1 class="h2">Доска Заказов {%if s is not None%}({{s.name}}){%endif%}</h1>
           <div class="btn-toolbar btn-group mb-2 mb-md-0" role="group" aria-label="Basic example">
             <div class="input-group-prepend">
               <button class="btn btn-outline-dark rounded-0 dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Категория</button>
               <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
+                {% for s in spec.all %}
+                <a class="dropdown-item" href="{%url 'tovar_cat' pk=s.id%}">{{s}}</a>
+                {% endfor%}
               </div>
             </div>
             <a href="{% url 'tovar_create' %}" class="rounded-0 btn btn-sm btn-outline-dark">

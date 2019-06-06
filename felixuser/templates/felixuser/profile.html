@@ -21,6 +21,8 @@
 <div class="row text-center text-md-left">
   <div class="col-md-3">
     <img src="/{{request.user.profile.image|default:'static/img/graphics-no-manager-image.svg'}}" width="150px" alt="" class="img rounded-circle img-fluid">
+    <h3>Лого</h3>
+    <img src="/{{request.user.profile.logo|default:'static/img/graphics-no-manager-image.svg'}}" width="150px" alt="" class="img rounded-circle img-fluid">
   </div>
   <div class="col-md-9">
     <div class="h4 text-secondary">{{request.user.profile.company}}
@@ -38,7 +40,7 @@
     Просмотры компании {{count.name}}
     <div class="row mt-4">
       <div class="col-4 h5">ИНН:</div>
-      <div class="col-8 h5">{{request.user.profile.identificate|default:'Не указан'}}</div>
+      <div class="col-8 h5 identificate">{{request.user.profile.identificate|default:'Не указан'}}</div>
       <div class="col-4 h5">Директор:</div>
       <div class="col-8 h5">{{request.user.profile.director|default:'Не указан'}}</div>
       <div class="col-4 h5">Город:</div>

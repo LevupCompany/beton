@@ -7,5 +7,5 @@ urlpatterns = [
     path('<city_slug>/<cat_slug>/', views.category, name='catalog_category'),
     path('<city_slug>/<cat_slug>/<subcat_slug>/', views.subcategory, name='catalog_subcategory'),
     path('<city_slug>/<cat_slug>/<subcat_slug>/<tovar_slug>/', views.tovar, name='catalog_tovar'),
-
+    path('search',views.search,name='catalog_search'),
 ]

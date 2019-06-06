@@ -1,0 +1,29 @@
+{%extends 'cabinet.html'%}
+{%block content%}
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+          <h1 class="h2">Доска уведомлений</h1>
+
+        </div>
+        <ol class="list-group">
+          <li class="list-group-item">
+            <div class="row ">
+              <div class="col-sm-2 col-3">Дата <span class="d-none d-lg-inline">публикации</span></div>
+              <div class="col-sm-10 col-9">Текст</div>
+            </div>
+          </li>
+        </ol>
+        <ol class="list-group">
+          {% for r in notify%}
+          <li class="list-group-item {%if request.user in r.read%}bg-light{%endif%}">
+            <div class="row">
+            <div class="col-sm-2 col-3">
+              {{r.date|date:'d.m.Y'}}
+            </div>
+            <div class="col-sm-10 col-9">{{r.text}}</div>
+          </div>
+          </li>
+          {% empty%}
+          <li class="list-group-item">У вас нет уведомлений {{note}}</li>
+          {% endfor%}
+        </ol>
+{%endblock%}

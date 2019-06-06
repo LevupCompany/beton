@@ -1,11 +1,46 @@
 from django.contrib.auth import login, authenticate
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect,HttpResponse
 from django.urls import reverse_lazy
 from felixuser.forms import *
+from felixuser.models import SmsVerify
+import random
 from django.views.generic import UpdateView
 from django.contrib.auth.decorators import login_required
-from .models import Profile
+from .models import Profile,Notification
 from catalog.models import Count
+from product.models import Tariff
+from .smsc_api import *
+def verify(request):
+    if request.POST.get("param2"):
+        param2 = request.POST.get('param2', None)
+        rd = random.randint(10000,99999)
+        smsc = SMSC()
+        r = smsc.send_sms("%s" %param2, "Ваш пароль для входа: %s" %rd, sender="sms")
+        if r[1] > "0":
+            try:
+                verify = SmsVerify.objects.get(number=param2)
+                verify.number=param2
+                verify.code=rd
+                verify.save()
+            except SmsVerify.DoesNotExist:
+                SmsVerify.objects.create(number=param2,code=rd)
+            return render(request,'felixuser/checkphone.html')
+        else:
+            l = r[1][1:]
+            if l == "7":
+                return HttpResponse('<span class="offset-md-5 col-md-7 font-weight-bold text-danger">Неверный номер</span>')
+            elif l == "8":
+                return HttpResponse('<span class="offset-md-5 col-md-7 font-weight-bold text-danger">Получение смс заблокировано</span>')
+            elif l == "4":
+                return HttpResponse('<span class="offset-md-5 col-md-7 font-weight-bold text-danger">Ваш ip адрес заблокирован на 60 минут</span>')
+    if request.POST.get("param_checker"):
+        param2_check = request.POST.get('param_check', None)
+        param2_checker = request.POST.get('param_checker', None)
+        try:
+            SmsVerify.objects.get(number=param2_check,code=param2_checker)
+            return HttpResponse('<span class="offset-md-5 col-md-7 font-weight-bold text-success">Верифицирован</span><input type="hidden" name="verificate" value=1/>')
+        except SmsVerify.DoesNotExist:
+            return render(request,'felixuser/checkphone.html',{'r':'Неправильный код'})
 def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST,request.FILES)
@@ -18,6 +53,7 @@ def signup(request):
             user.profile.site = form.cleaned_data.get('site')
             user.profile.manager = form.cleaned_data.get('manager')
             user.profile.image = form.cleaned_data.get('image')
+            user.profile.logo = form.cleaned_data.get('logo')
             user.profile.admin = form.cleaned_data.get('admin')
             user.profile.city = form.cleaned_data.get('city')
             user.profile.phone = form.cleaned_data.get('phone')
@@ -29,6 +65,8 @@ def signup(request):
             raw_password = form.cleaned_data.get('password1')
             c = Count(profile=user)
             c.save()
+            t = Tariff(user=user.profile)
+            t.save()
             user = authenticate(username=user.username, password=raw_password)
             login(request, user)
             return redirect('profile_index')
@@ -88,5 +126,13 @@ class UpdateProfiles(UpdateView):
          return super(UpdateProfiles, self).form_valid(form)
 @login_required
 def profile(request):
-    count=Count.objects.get(profile=request.user)
+    count=Count.objects.get(profile=request.user.id)
     return render(request, 'felixuser/profile.html',{'count':count})
+def index_notify(request):
+    notify = Notification.objects.all()
+    if  request.user.is_authenticated:
+        e=Profile.objects.get(user=request.user)
+        check_user = [notify for notify in Notification.objects.exclude(zones=request.user.id)]
+        e.read.set(check_user)
+        e.save()
+    return render(request, 'product/notify.html',{'notify':notify})

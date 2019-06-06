@@ -1,0 +1,51 @@
+{%extends 'cabinet.html'%}
+{%block content%}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Статистика</h1>
+    <div class="dropdown">
+        <button class="btn btn-sm btn-outline-dark dropdown-toggle"
+                type="button" id="dropdownMenu1" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+             class="feather feather-calendar">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+            Месяц
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
+            <a class="dropdown-item px-2 btn-outline-dark" href="{%url 'analitic_index'%}">Неделя</a>
+            <a class="dropdown-item px-2 btn-outline-dark" href="{%url 'analitic_3m'%}">3 месяца</a>
+            <a class="dropdown-item px-2 btn-outline-dark" href="{%url 'analitic_6m'%}">6 месяцев</a>
+            <a class="dropdown-item px-2 btn-outline-dark" href="{%url 'analitic_y'%}">Год</a>
+        </div>
+    </div>
+
+</div>
+<div class="row mt-3">
+
+    {% load googlecharts %}
+    <div id="out" class="col-12"></div>
+    {% googlecharts %}
+    {% data values "out_data" %}
+    {% col "string" "Name" %}"{{ val|date:"M j" }}"{% endcol %}
+    {% col "number" "Заказы" %}{{ val }}{% endcol %}
+    {% enddata %}
+    {% options "out_options" %}
+    kind: "LineChart",
+    options: {
+    width: '100%',
+    height: 400
+
+    }
+    {% endoptions %}
+
+    {% graph "out" "out_data" "out_options" %}
+    {% endgooglecharts %}
+</div>
+
+
+{%endblock%}

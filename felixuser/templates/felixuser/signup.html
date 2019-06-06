@@ -1,25 +1,66 @@
 {% extends 'index.htm' %}
 
 {% block content %}
+{% url 'signup' as signup%}
+            {%if request.path == signup%}
+<script>
+    function verifier(){
+   var x=document.forms["forma"]["verificate"];
+   if (x == null){
+      document.getElementById("verif1er").innerHTML="Пройдите верификацию номера телефона";
+      return false;
+   }
+}
+
+
+</script>
+            {%endif%}
+
 <section class="bg-light">
   <div class="container">
-    <h1 class="pt-4 font-weight-bold h2">Регистрация компании поставщика</h1>
+    <h1 class="pt-4 font-weight-bold h2">{%if request.path == signup%}Регистрация компании поставщика{%else%}Редактирование профиля{%endif%}</h1>
     <div class="row">
       <div class="col-lg-9">
         <div class="search_items bg-white p-3 my-5 mb-0 rounded-0 shadow-sm">
 
-          <form method="post" enctype="multipart/form-data">
-
-            {% csrf_token %}
+          <form method="post" {%if request.path == signup%} name="forma" onsubmit="return verifier()" {%endif%} enctype="multipart/form-data">
+            <span id="verif1er" class="text-danger"></span>
             {% for field in form %}
-
             <div class="form-group row mx-sm-2">
               <label class="col-md-5 pt-2" for="{{ field.id_for_label}}">{{ field.label}}</label>
               {{ field }}
               {% for error in field.errors %}            <div class="alert alert-danger">
 {{ error }}</div>{% endfor %}
+            {%if field.name == 'username'%}
+                    <button name="send_code" id="send_code" class="btn col-md-2 text-dark bg-primary btn-primary" style="margin-top:-2px" type="submit">Смс код</button>
+                <script>
+                   $(document).on("click", "#send_code", function(){
+
+        var param = $("#id_username").val();
+        $.ajax({
+            type: 'POST', // метод отправки
+            url: '{%url 'verify'%}', // путь к обработчику
+            data: {
+                param2: param,csrfmiddlewaretoken:'{{csrf_token}}'},// переменная со значением из поля с классом email
+
+            success: function(data){
+                $(".answer").html(data); // при успешном получении ответа от сервера, заносим полученные данные в элемент с классом answer
+            },
+            error: function(data){
+                $(".answer").html('<span class="offset-md-5 col-md-7 font-weight-bold text-danger">Неверное значение</span>'); // выводим ошибку в консоль
+            }
+        });
+
+        return false;
+    })
+
+                </script>
+                <div class="answer col-12"></div>
+            {%endif%}
             </div>
             {% endfor %}
+                          {% csrf_token %}
+
             <script type="text/javascript">
               $('.yellow11').dropdown({
                 toggleText: 'Выберите продукт',
@@ -27,12 +68,13 @@
                 autoResize: 0,
                 titleText: 'Выберите продукт',
                 classes: {
-                  dropdown: 'col-md-7 form-control yellow',
+                  dropdown: 'col-md-7 form-control yellow4',
 
                 }
               });
             </script>
-            <button type="submit">Зарегистрироваться</button>
+
+              <div class="text-right"><button class="btn pull-right text-dark bg-primary btn-primary" onclick="verifier(this.form)" type="submit">Зарегистрироваться</button></div>
           </form>
         </div>
       </div>

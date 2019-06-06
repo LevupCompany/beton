@@ -23,28 +23,28 @@
   <script src="/static/js/jquery.dropdown.min.js"></script>
   <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
   <script src="//unpkg.com/feather-icons"></script>
-  <script type="text/javascript">
-  $(document).ready(function(){
-      var link = window.location.pathname;
-      var nav1 = $('.nav23 li a').toArray();
-      for (i=nav1; i<nav1.length; i++){
-        console.log('заебись');
-      };
-      $('.nav23 li a[href="'+link+'"]').addClass('active');
-      $('.navbar-nav li a[href="'+link+'"]').addClass('active');
-    });
-  </script>
   <title>Кабинет {{request.user.profile.company}}</title>
 
   <!-- Bootstrap core CSS -->
 
 
   <style>
+    .dropdown-menu{
+    min-width:6.5rem;
+    }
     .bd-placeholder-img {
         font-size: 1.125rem;
         text-anchor: middle;
       }
-
+     .btn-outline-dark:not(:disabled):not(.disabled):active:focus, .btn-outline-dark:not(:disabled):not(.disabled).active:focus, .show > .btn-outline-dark.dropdown-toggle:focus{
+      box-shadow:none;
+     }
+     .btn-outline-dark:not(:disabled):not(.disabled):hover{
+      color:white;
+      background-color:#212121;
+      border-color:#212121;
+     }
+    .dropdown-item.btn-outline-dark
       @media (min-width: 768px) {
         .bd-placeholder-img-lg {
           font-size: 3.5rem;
@@ -55,6 +55,13 @@
   <link href="/static/css/dashboard.css" rel="stylesheet">
 
 </head>
+{% url 'tovar_index' as tovar_index %}
+{% url 'order_index' as order_index %}
+{% url 'gallery_index' as gallery_index %}
+{% url 'review_index' as review_index%}
+{% url 'profile_index' as profile_index%}
+{% url 'analitic_index' as analitic_index%}
+{% url 'tariff_index' as tariff_index%}
 
 <body>
   <nav class="navbar navbar-dark navbar-expand-md fixed-top p-0 shadow-sm" style=" background-color: black">
@@ -65,38 +72,43 @@
     <div class="collapse navbar-collapse mx-3" id="navbarText">
       <ul class="navbar-nav justify-content-end">
         <li class="d-md-none nav-item">
-          <a class="nav-link" href="#">
+          <a class="nav-link {% if analitic_index in request.path%}active{%endif%}" href="{{analitic_index}}">
             Аналитика
           </a>
         </li>
         <li class="d-md-none nav-item">
-          <a class="nav-link" href="{% url 'order_index' %}">
+          <a class="nav-link {% if order_index in request.path%}active{%endif%}" href="{{order_index}}">
             Заказы
           </a>
         </li>
         <li class="d-md-none nav-item">
-          <a class="nav-link" href="{% url 'review_index'%}">
+          <a class="nav-link {% if review_index in request.path%}active{%endif%}" href="{{review_index}}">
             Отзывы
           </a>
         </li>
         <li class="d-md-none nav-item">
-          <a class="nav-link" href="#">
+          <a class="nav-link {% if tariff_index in request.path%}active{%endif%}" href="{{tariff_index}}">
             Тарифы
           </a>
         </li>
         <li class="d-md-none nav-item">
-          <a class="nav-link" href="{% url 'tovar_index' %}">
+          <a class="nav-link {% if tovar_index in request.path%}active{%endif%}" href="{{tovar_index}}">
             Загрузка товаров
           </a>
         </li>
+         <li class="d-md-none nav-item">
+          <a class="nav-link {% if gallery_index in request.path%}active{%endif%}" href="{{gallery_index}}">
+            Галлерея
+          </a>
+        </li>
         <li class="d-md-none nav-item">
-          <a class="nav-link" href="{% url 'profile_index' %}">
+          <a class="nav-link {% if profile_index in request.path%}active{%endif%}" href="{{profile_index}}">
             Профиль
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">
-            Уведомления <span class="ml-1 badge badge-pill badge-success">2</span>
+          <a class="nav-link" href="{%url 'notify_index'%}">
+            Уведомления {%if note > 0%}<span class="ml-1 badge badge-pill badge-success">{{note}}</span>{%endif%}
           </a>
         </li>
         <li class="nav-item text-nowrap">
@@ -112,39 +124,45 @@
     <div class="row">
       <nav class="col-md-2 d-none d-md-block bg-light sidebar">
         <div class="sidebar-sticky fixed-top">
-          <ul class="nav nav23 flex-column">
+          <ul class="nav flex-column">
             <li class="nav-item">
-              <a class="nav-link" href="#">
+              <a class="nav-link {% if analitic_index in request.path%}active{%endif%}" href="{{analitic_index}}">
                 <span class="mr-1" data-feather="activity"></span>
                 Аналитика
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'order_index' %}">
+              <a class="nav-link {% if order_index in request.path%}active{%endif%}" href="{{order_index}}">
                 <span class="mr-1" data-feather="briefcase"></span>
                 Заказы
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'review_index'%}">
+              <a class="nav-link {% if review_index in request.path%}active{%endif%}" href="{{review_index}}">
                 <span class="mr-1" data-feather="book"></span>
                 Отзывы
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">
+              <a class="nav-link {% if tariff_index in request.path%}active{%endif%}" href="{{tariff_index}}">
                 <span class="mr-1" data-feather="dollar-sign"></span>
                 Тарифы
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'tovar_index' %}">
+              <a class="nav-link {% if tovar_index in request.path%}active{%endif%}" href="{{tovar_index}}" >
                 <span class="mr-1" data-feather="download-cloud"></span>
                 Загрузка товаров
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'profile_index' %}">
+              <a class="nav-link {% if gallery_index in request.path%}active{%endif%}" href="{{gallery_index}}">
+                <span data-feather="image"></span>
+                Галерея
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {% if profile_index in request.path%}active{%endif%}" href="{{profile_index}}">
                 <span data-feather="dollar-sign"></span>
                 Профиль
               </a>
@@ -167,6 +185,9 @@
 <script>
   $('.phone').text(function(i, text) {
     return text.replace(/(\d{3})(\d{3})(\d{2})(\d{2})/, '+38'+' ($1) $2-$3-$4');
+});
+$('.identificate').text(function(i, text) {
+    return text.replace(/(\d{3})(\d{3})(\d{2})(\d{2})/,  '$1-$2-$3-$4');
 });
 </script>
 
